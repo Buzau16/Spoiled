@@ -1,11 +1,9 @@
 #include <iostream>
-
-#include <Spyen.h>
+#include <Spyen/Spyen.h>
 
 int main() {
 	std::string title = "Spyen";
-	uint32_t width = 800;
-	uint32_t height = 600;
-	Spyen::InitWindow(title, width, height);
+	Spyen::InitWindow(title, 800, 600);
+	std::cin.get();
     return 0;
 }
