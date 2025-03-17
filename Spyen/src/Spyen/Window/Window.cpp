@@ -1,7 +1,17 @@
+#include "spypch.h"
+
 #include "Window.h"
 
 namespace Spyen {
-	void Window::Init(std::string& title, uint32_t width, uint32_t height)
+
+	Window::Window()
+		: m_Window(nullptr),
+		  m_Context(nullptr),
+		  m_Width(0),
+		  m_Height(0)
+	{}
+
+	void Window::Init(const char* title, uint32_t width, uint32_t height)
 	{
 		m_Width = width;
 		m_Height = height;
@@ -47,6 +57,11 @@ namespace Spyen {
 
 		glViewport(0, 0, m_Width, m_Height);
 		glEnable(GL_DEPTH_TEST);
+	}
+
+	bool Window::IsOpen()
+	{
+		return m_Window != nullptr;
 	}
 
 	void Window::Destroy()

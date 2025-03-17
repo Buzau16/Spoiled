@@ -1,19 +1,20 @@
 #pragma once
-#include <SDL2/SDL.h>
-#include <string>
-#include <iostream>
-#include <GL/glew.h>
 
+#include "spypch.h"
+
+// TODO : EVENT SYSTEM
 
 namespace Spyen {
 	class Window
 	{
 
 	public:
-		Window() = default;
+		Window();
 		~Window() = default;
+		
 
-		void Init(std::string& title, uint32_t width, uint32_t height);
+		void Init(const char* title, uint32_t width, uint32_t height);
+		bool IsOpen();
 		void Destroy();
 
 	private:

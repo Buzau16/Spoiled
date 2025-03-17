@@ -15,6 +15,9 @@ project "Spyen"
 	
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	pchheader "spypch.h"
+	pchsource "Spyen/src/Spyen/spypch.cpp"
 	
 	files {
 		"%{prj.name}/src/**.h",
@@ -22,6 +25,7 @@ project "Spyen"
 	}
 	
 	includedirs {
+		"Spyen/src/Spyen",
 		"%{prj.name}/vendor/GLEW/include;",
 		"%{prj.name}/vendor/GLM;",
 		"%{prj.name}/vendor/SDL/include;"
