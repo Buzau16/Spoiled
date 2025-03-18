@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
+#include <sstream>
 
 #include <SDL2/SDL.h>
 #include <GL/glew.h>

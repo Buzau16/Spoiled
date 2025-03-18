@@ -17,7 +17,6 @@ namespace Spyen {
 		m_Height = height;
 		m_Title = title;
 
-
 		if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 			std::cerr << "Error initalizing SDL: " << SDL_GetError();
 			return;
@@ -57,6 +56,19 @@ namespace Spyen {
 
 		glViewport(0, 0, m_Width, m_Height);
 		glEnable(GL_DEPTH_TEST);
+	}
+
+	void Window::PollEvents()
+	{
+		// Spyen event system
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_QUIT:
+				m_Window = nullptr;
+				break;
+			}
+		}
 	}
 
 	bool Window::IsOpen()

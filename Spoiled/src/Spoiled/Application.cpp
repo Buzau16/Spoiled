@@ -1,13 +1,9 @@
 #include <iostream>
+
 #include <Spyen/Spyen.h>
 
 int main() {
-	Spyen::Window window;
-	window.Init("Spyen", 800, 600);
-
-	while(window.IsOpen()){
-		// Do stuff
-	}
-	window.Destroy();
+	Spyen::InitWindow("Spyen", 800, 600);
+	Spyen::Run();
     return 0;
 }

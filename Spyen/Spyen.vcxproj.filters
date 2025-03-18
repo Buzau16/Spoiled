@@ -13,21 +13,24 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Spyen\Spyen.h" />
-    <ClInclude Include="src\Spyen\Window\Window.h">
+    <ClInclude Include="src\Spyen\Core\Window.h">
       <Filter>Window</Filter>
     </ClInclude>
     <ClInclude Include="src\Spyen\spypch.h" />
     <ClInclude Include="src\Spyen\Events\Event.h" />
     <ClInclude Include="src\Spyen\Core\Base.h" />
     <ClInclude Include="src\Spyen\Events\KeyEvent.h" />
+    <ClInclude Include="src\Spyen\Core\Keycodes.h" />
+    <ClInclude Include="src\Spyen\Platform\OpenGL\OpenGLWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Spyen\Core\Application.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Spyen\Window\Window.cpp">
+    <ClCompile Include="src\Spyen\Core\Window.cpp">
       <Filter>Window</Filter>
     </ClCompile>
     <ClCompile Include="src\Spyen\spypch.cpp" />
+    <ClCompile Include="src\Spyen\Platform\OpenGL\OpenGLWindow.cpp" />
   </ItemGroup>
 </Project>
