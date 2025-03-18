@@ -144,6 +144,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Spyen\Core\Application.h" />
+    <ClInclude Include="src\Spyen\Core\Base.h" />
+    <ClInclude Include="src\Spyen\Events\Event.h" />
+    <ClInclude Include="src\Spyen\Events\KeyEvent.h" />
     <ClInclude Include="src\Spyen\Spyen.h" />
     <ClInclude Include="src\Spyen\Window\Window.h" />
     <ClInclude Include="src\Spyen\spypch.h" />

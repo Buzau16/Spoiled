@@ -38,7 +38,8 @@ project "Spyen"
 		systemversion "latest"
 		
 		defines {
-			"SP_PLATFORM_WINDOWS"
+			"SP_PLATFORM_WINDOWS",
+			"SP_GL"
 		}
 
 		postbuildcommands{

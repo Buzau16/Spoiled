@@ -12,8 +12,12 @@ namespace Spyen {
 		Window();
 		~Window() = default;
 		
-
+#ifndef SP_GL
 		void Init(const char* title, uint32_t width, uint32_t height);
+#else
+		// VULKAN INITIALIZATION
+#endif // !SPY_GL
+
 		bool IsOpen();
 		void Destroy();
 
