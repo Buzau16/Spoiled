@@ -4,23 +4,25 @@
 
 
 namespace Spyen {
+	void SetBackgroundColor(float r, float g, float b, float a)
+	{
+		s_BackgroundColor = { r, g, b };
+	}
 	void InitWindow(const char* title, uint32_t width, uint32_t height)
 	{
-		s_Window = new Window();
-		s_Window->Init(title, height, height);
+		s_Window.Init(title, height, height);
 	}
 
 	void Run()
 	{
-		while (s_Window->IsOpen()) {
-			s_Window->PollEvents();
+		while (s_Window.IsOpen()) {
 
-			// Do stuff
+			s_Window.PollEvents();
 
+			s_Window.Clear(s_BackgroundColor.r, s_BackgroundColor.b, s_BackgroundColor.g);
 
-			SDL_GL_SwapWindow(s_Window->GetWindow());
+			s_Window.SwapBuffers();
 		}
-		s_Window->Destroy();
-		delete s_Window;
+		s_Window.Destroy();
 	}
 }

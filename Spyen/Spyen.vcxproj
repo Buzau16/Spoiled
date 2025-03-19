@@ -76,8 +76,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>spypch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>SP_PLATFORM_WINDOWS;SP_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Spyen;vendor\GLEW\include;;vendor\GLM;;vendor\SDL\include;;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SP_PLATFORM_WINDOWS;SP_GL;SP_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src\Spyen;vendor\glew\include;;vendor\glm;;vendor\glfw\include;;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -97,8 +97,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>spypch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>SP_PLATFORM_WINDOWS;SP_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Spyen;vendor\GLEW\include;;vendor\GLM;;vendor\SDL\include;;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SP_PLATFORM_WINDOWS;SP_GL;SP_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src\Spyen;vendor\glew\include;;vendor\glm;;vendor\glfw\include;;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -122,8 +122,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>spypch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>SP_PLATFORM_WINDOWS;SP_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\Spyen;vendor\GLEW\include;;vendor\GLM;;vendor\SDL\include;;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SP_PLATFORM_WINDOWS;SP_GL;SP_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src\Spyen;vendor\glew\include;;vendor\glm;;vendor\glfw\include;;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -143,18 +143,16 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Spyen\Platform\OpenGL\OpenGLWindow.h" />
     <ClInclude Include="src\Spyen\Core\Application.h" />
     <ClInclude Include="src\Spyen\Core\Base.h" />
     <ClInclude Include="src\Spyen\Core\Keycodes.h" />
+    <ClInclude Include="src\Spyen\Core\Window.h" />
     <ClInclude Include="src\Spyen\Events\Event.h" />
     <ClInclude Include="src\Spyen\Events\KeyEvent.h" />
     <ClInclude Include="src\Spyen\Spyen.h" />
-    <ClInclude Include="src\Spyen\Core\Window.h" />
     <ClInclude Include="src\Spyen\spypch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Spyen\Platform\OpenGL\OpenGLWindow.cpp" />
     <ClCompile Include="src\Spyen\Core\Application.cpp" />
     <ClCompile Include="src\Spyen\Core\Window.cpp" />
     <ClCompile Include="src\Spyen\spypch.cpp">

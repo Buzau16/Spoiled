@@ -3,83 +3,85 @@
 #include "Window.h"
 
 namespace Spyen {
-
-	Window::Window()
-		: m_Window(nullptr),
-		  m_Context(nullptr),
-		  m_Width(0),
-		  m_Height(0)
-	{}
+	Window::Window():
+		m_Window(nullptr),
+		m_Data({ nullptr, "", 0, 0, false })
+	{
+	}
 
 	void Window::Init(const char* title, uint32_t width, uint32_t height)
 	{
-		m_Width = width;
-		m_Height = height;
-		m_Title = title;
+		m_Data.Title = title;
+		m_Data.Width = width;
+		m_Data.Height = height;
 
-		if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-			std::cerr << "Error initalizing SDL: " << SDL_GetError();
+		if (!glfwInit()) {
+			std::cerr << "Failed to initialize GLFW" << std::endl;
 			return;
 		}
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-		SDL_GL_SetSwapInterval(0);
-
-		m_Window = SDL_CreateWindow(m_Title.c_str(), 200, 200, m_Width, m_Height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-
+		m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 		if (!m_Window) {
-			std::cerr << "Error initializing window: " << SDL_GetError() << std::endl;
-			SDL_Quit();
+			std::cerr << "Failed to create window" << std::endl;
+			glfwTerminate();
 			return;
 		}
-
-		m_Context = SDL_GL_CreateContext(m_Window);
-		if (!m_Context) {
-			std::cerr << "Error creating OpenGL context: " << SDL_GetError() << std::endl;
-			SDL_DestroyWindow(m_Window);
-			SDL_Quit();
-			return;
-		}
+		glfwMakeContextCurrent(m_Window);
 
 		glewExperimental = GL_TRUE;
-		if (glewInit() != GLEW_OK) {
-			std::cerr << "Failed to initalize GLEW!\n";
-			SDL_GL_DeleteContext(m_Context);
-			SDL_DestroyWindow(m_Window);
-			SDL_Quit();
+		GLenum err = glewInit();
+		if (err != GLEW_OK) {
+			std::cerr << "Failed to initialize GLEW" << std::endl;
+			glfwDestroyWindow(m_Window);
+			glfwTerminate();
+			return;
 		}
 
-		glViewport(0, 0, m_Width, m_Height);
 		glEnable(GL_DEPTH_TEST);
-	}
+		glViewport(0, 0, width, height);
 
-	void Window::PollEvents()
-	{
-		// Spyen event system
-		SDL_Event event;
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-			case SDL_QUIT:
-				m_Window = nullptr;
-				break;
-			}
-		}
-	}
 
-	bool Window::IsOpen()
-	{
-		return m_Window != nullptr;
+		glfwSetWindowUserPointer(m_Window, &m_Data);
 	}
 
 	void Window::Destroy()
 	{
-		SDL_GL_DeleteContext(m_Context);
-		SDL_DestroyWindow(m_Window);
-		SDL_Quit();
+		glfwDestroyWindow(m_Window);
+		glfwTerminate();
+	}
+	void Window::SetVSync(bool enabled)
+	{
+		if (enabled) {
+			m_Data.VSync = true;
+			glfwSwapInterval(m_Data.VSync);
+		}
+		else {
+			m_Data.VSync = false;
+			glfwSwapInterval(m_Data.VSync);
+		}
+	}
+	void Window::SwapBuffers()
+	{
+		glfwSwapBuffers(m_Window);
+	}
+
+	bool Window::IsOpen()
+	{
+		return !glfwWindowShouldClose(m_Window);
+	}
+
+	void Window::PollEvents()
+	{
+		glfwPollEvents();
+	}
+	void Window::Clear(float r, float g, float b)
+	{
+		glClearColor(r, g, b, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 };

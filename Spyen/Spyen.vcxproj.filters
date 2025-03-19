@@ -4,33 +4,39 @@
     <Filter Include="Core">
       <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Window">
-      <UniqueIdentifier>{3DEA79DA-298C-A4B0-1247-B804FE872B01}</UniqueIdentifier>
+    <Filter Include="Events">
+      <UniqueIdentifier>{3A8963B1-262B-8E87-0FE6-A1DBFB2615D8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Spyen\Core\Application.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Spyen\Spyen.h" />
-    <ClInclude Include="src\Spyen\Core\Window.h">
-      <Filter>Window</Filter>
+    <ClInclude Include="src\Spyen\Core\Base.h">
+      <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Spyen\Core\Keycodes.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Spyen\Core\Window.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Spyen\Events\Event.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Spyen\Events\KeyEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Spyen\Spyen.h" />
     <ClInclude Include="src\Spyen\spypch.h" />
-    <ClInclude Include="src\Spyen\Events\Event.h" />
-    <ClInclude Include="src\Spyen\Core\Base.h" />
-    <ClInclude Include="src\Spyen\Events\KeyEvent.h" />
-    <ClInclude Include="src\Spyen\Core\Keycodes.h" />
-    <ClInclude Include="src\Spyen\Platform\OpenGL\OpenGLWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Spyen\Core\Application.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Spyen\Core\Window.cpp">
-      <Filter>Window</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Spyen\spypch.cpp" />
-    <ClCompile Include="src\Spyen\Platform\OpenGL\OpenGLWindow.cpp" />
   </ItemGroup>
 </Project>

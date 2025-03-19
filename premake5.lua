@@ -26,9 +26,9 @@ project "Spyen"
 	
 	includedirs {
 		"Spyen/src/Spyen",
-		"%{prj.name}/vendor/GLEW/include;",
-		"%{prj.name}/vendor/GLM;",
-		"%{prj.name}/vendor/SDL/include;"
+		"%{prj.name}/vendor/glew/include;",
+		"%{prj.name}/vendor/glm;",
+		"%{prj.name}/vendor/glfw/include;"
 
 	}
 	
@@ -73,23 +73,24 @@ project "Spoiled"
 	
 	includedirs {
 		"Spyen/src",
-		"Spyen/vendor/GLEW/include",
-		"Spyen/vendor/GLM",
-		"Spyen/vendor/SDL/include"
+		"Spyen/vendor/glew/include",
+		"Spyen/vendor/glew",
+		"Spyen/vendor/glfw/include"
 	}
 
 	libdirs{
-		"Spyen/vendor/GLEW/lib/Release/x64",
-		"Spyen/vendor/SDL/lib"
+		"Spyen/vendor/glew/lib/Release/x64",
+		"Spyen/vendor/glfw/lib"
 	}
 	
 	links {
 		"Spyen",
-		"opengl32",
 		"glew32",
-		"SDL2",
+		"glfw3",
+		"opengl32",
+		"msvcrt"
 	}
-	
+
 	filter "system:windows"
 		cppdialect "C++20"
 		staticruntime "On"
@@ -98,7 +99,7 @@ project "Spoiled"
 		defines {
 			"SP_PLATFORM_WINDOWS"
 		}
-		
+
 	filter "configurations:Debug"
 		defines "SP_DEBUG"
 		symbols "On"
@@ -110,10 +111,3 @@ project "Spoiled"
 	filter "configurations:Dist"
 		defines "SP_DIST"
 		optimize "On"
-		
-	filter "system:windows"
-		systemversion "latest"
-		
-		defines {
-			"SP_PLATFORM_WINDOWS"
-		}
