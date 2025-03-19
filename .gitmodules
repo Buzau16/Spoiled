@@ -1,0 +1,3 @@
+[submodule "Spyen/vendor/glfw"]
+	path = Spyen/vendor/glfw
+	url = https://github.com/glfw/glfw.git
