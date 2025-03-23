@@ -9,34 +9,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Spyen\Core\Application.h">
+    <ClInclude Include="src\Core\Application.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Spyen\Core\Base.h">
+    <ClInclude Include="src\Core\Base.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Spyen\Core\Keycodes.h">
+    <ClInclude Include="src\Core\Keycodes.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Spyen\Core\Window.h">
+    <ClInclude Include="src\Core\Mousecodes.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Spyen\Events\Event.h">
-      <Filter>Events</Filter>
+    <ClInclude Include="src\Core\Window.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Spyen\Events\KeyEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Spyen\Spyen.h" />
-    <ClInclude Include="src\Spyen\spypch.h" />
+    <ClInclude Include="src\Spyen.h" />
+    <ClInclude Include="src\spypch.h" />
+    <ClInclude Include="src\Input\Input.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Spyen\Core\Application.cpp">
+    <ClCompile Include="src\Core\Application.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Spyen\Core\Window.cpp">
+    <ClCompile Include="src\Core\Window.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Spyen\spypch.cpp" />
+    <ClCompile Include="src\spypch.cpp" />
+    <ClCompile Include="src\Input\Input.cpp" />
   </ItemGroup>
 </Project>

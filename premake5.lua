@@ -17,7 +17,7 @@ project "Spyen"
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
 	pchheader "spypch.h"
-	pchsource "Spyen/src/Spyen/spypch.cpp"
+	pchsource "Spyen/src/spypch.cpp"
 	
 	files {
 		"%{prj.name}/src/**.h",
@@ -25,16 +25,16 @@ project "Spyen"
 	}
 	
 	includedirs {
-		"Spyen/src/Spyen",
-		"%{prj.name}/vendor/glew/include;",
-		"%{prj.name}/vendor/glm;",
-		"%{prj.name}/vendor/glfw/include;"
+		"Spyen/src",
+		"%{prj.name}/vendor/glew/include",
+		"%{prj.name}/vendor/glm",
+		"%{prj.name}/vendor/glfw/include"
 
 	}
 	
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
+		staticruntime "Off"
 		systemversion "latest"
 		
 		defines {
@@ -88,12 +88,11 @@ project "Spoiled"
 		"glew32",
 		"glfw3",
 		"opengl32",
-		"msvcrt"
 	}
 
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
+		staticruntime "Off"
 		systemversion "latest"
 		
 		defines {

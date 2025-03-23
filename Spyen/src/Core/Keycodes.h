@@ -1,10 +1,8 @@
 #pragma once
 
-#include "spypch.h"
-
 namespace Spyen
 {
-	using KeyCode = uint16_t;
+	using KeyCode = uint32_t;
 
 	enum : KeyCode {
 		SPK_SPACE = 32,
@@ -14,7 +12,7 @@ namespace Spyen
 		SPK_PERIOD = 46, /* . */
 		SPK_SLASH = 47,  /* / */
 		SPK_0 = 48,
-		SPK_2 = 50,
+		SPK_1 = 49,
 		SPK_2 = 50,
 		SPK_3 = 51,
 		SPK_4 = 52,

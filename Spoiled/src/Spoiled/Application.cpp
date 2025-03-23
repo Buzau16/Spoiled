@@ -1,6 +1,5 @@
 #include <iostream>
-
-#include <Spyen/Spyen.h>
+#include <Spyen.h>
 
 int main() {
 	Spyen::InitWindow("Spyen", 800, 600);
