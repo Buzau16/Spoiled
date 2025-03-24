@@ -151,6 +151,7 @@
     <ClInclude Include="src\Core\Window.h" />
     <ClInclude Include="src\Spyen.h" />
     <ClInclude Include="src\spypch.h" />
+    <ClInclude Include="src\Time\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Input\Input.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="src\spypch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Time\Time.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

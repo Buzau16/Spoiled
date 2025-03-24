@@ -56,6 +56,7 @@ namespace Spyen {
 		glfwDestroyWindow(m_Window);
 		glfwTerminate();
 	}
+
 	void Window::SetVSync(bool enabled)
 	{
 		if (enabled) {
@@ -67,6 +68,7 @@ namespace Spyen {
 			glfwSwapInterval(m_Data.VSync);
 		}
 	}
+
 	void Window::SwapBuffers()
 	{
 		glfwSwapBuffers(m_Window);
@@ -81,6 +83,7 @@ namespace Spyen {
 	{
 		glfwPollEvents();
 	}
+
 	void Window::Clear(float r, float g, float b)
 	{
 		glClearColor(r, g, b, 1.0f);

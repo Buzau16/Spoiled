@@ -27,6 +27,7 @@
     <ClInclude Include="src\Spyen.h" />
     <ClInclude Include="src\spypch.h" />
     <ClInclude Include="src\Input\Input.h" />
+    <ClInclude Include="src\Time\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Application.cpp">
@@ -37,5 +38,6 @@
     </ClCompile>
     <ClCompile Include="src\spypch.cpp" />
     <ClCompile Include="src\Input\Input.cpp" />
+    <ClCompile Include="src\Time\Time.cpp" />
   </ItemGroup>
 </Project>

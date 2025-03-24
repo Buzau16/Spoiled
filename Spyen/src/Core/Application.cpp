@@ -19,6 +19,8 @@ namespace Spyen {
 
 			s_Window.PollEvents();
 
+			Time::UpdateTime();
+
 			s_Window.Clear(s_BackgroundColor.r, s_BackgroundColor.b, s_BackgroundColor.g);
 
 			s_Window.SwapBuffers();
