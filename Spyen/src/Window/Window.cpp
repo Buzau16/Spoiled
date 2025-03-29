@@ -35,7 +35,7 @@ namespace Spyen {
 
 		glewExperimental = GL_TRUE;
 		GLenum err = glewInit();
-		if (err != GLEW_OK) {
+		if (err != GLEW_OK ) {
 			std::cerr << "Failed to initialize GLEW" << std::endl;
 			glfwDestroyWindow(m_Window);
 			glfwTerminate();

@@ -25,4 +25,8 @@ namespace Spyen {
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
+	std::shared_ptr<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count)
+	{
+		return std::make_shared<IndexBuffer>(indices, count);
+	}
 }

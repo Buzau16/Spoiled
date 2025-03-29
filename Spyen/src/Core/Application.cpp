@@ -13,6 +13,11 @@ namespace Spyen {
 		s_Window.Init(title, height, height);
 	}
 
+	void Init()
+	{
+		Renderer::Init();
+	}
+
 	void Run()
 	{
 		while (s_Window.IsOpen()) {
@@ -22,6 +27,11 @@ namespace Spyen {
 			Time::UpdateTime();
 
 			s_Window.Clear(s_BackgroundColor.r, s_BackgroundColor.b, s_BackgroundColor.g);
+
+			// Render
+			Renderer::BeginBatch();
+			Renderer::SubmitQuad({ 0.0f, 0.0f, 1.0f, 0.0f }, { 1.0f, 1.0f, 0.0f });
+			Renderer::EndBatch();
 
 			s_Window.SwapBuffers();
 		}

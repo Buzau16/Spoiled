@@ -21,7 +21,8 @@ project "Spyen"
 	
 	files {
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/**.hpp"
 	}
 	
 	includedirs {
@@ -74,7 +75,7 @@ project "Spoiled"
 	includedirs {
 		"Spyen/src",
 		"Spyen/vendor/glew/include",
-		"Spyen/vendor/glew",
+		"Spyen/vendor/glm",
 		"Spyen/vendor/glfw/include"
 	}
 
