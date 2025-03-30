@@ -2,7 +2,8 @@
 #include <cstdint>
 #include <cassert>
 
-namespace Spyen {
+namespace Spyen
+{
 	enum class ShaderDataType {
 		None = 0, Float, Float2, Float3, Float4, Mat4, Int, Int2, Int3, Int4, Bool
 	};
@@ -22,9 +23,7 @@ namespace Spyen {
 		case ShaderDataType::Int4:		return 4 * 4;
 		case ShaderDataType::Bool:		return 1;
 		}
-
 		assert(false && "Invalind ShaderDataType");
 		return -1;
 	}
 }
-

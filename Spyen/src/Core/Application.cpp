@@ -18,8 +18,14 @@ namespace Spyen {
 		Renderer::Init();
 	}
 
+	void AddQuad(const Vector2& position, const Color& color)
+	{
+		Renderer::SubmitQuad(position, color);
+	}
+
 	void Run()
 	{
+		
 		while (s_Window.IsOpen()) {
 
 			s_Window.PollEvents();
@@ -30,11 +36,12 @@ namespace Spyen {
 
 			// Render
 			Renderer::BeginBatch();
-			Renderer::SubmitQuad({ 0.0f, 0.0f, 1.0f, 0.0f }, { 1.0f, 1.0f, 0.0f });
+			Renderer::SubmitQuad({ 0.0f, 0.0f, 0.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
 			Renderer::EndBatch();
 
 			s_Window.SwapBuffers();
 		}
 		s_Window.Destroy();
+		Renderer::Shutdown();
 	}
 }

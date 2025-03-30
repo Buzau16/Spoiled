@@ -1,8 +1,8 @@
 #pragma once
 #include "Renderer/ShaderDataType.h"
-#include <string>
 
-namespace Spyen {
+namespace Spyen
+{
 	struct BufferElement {
 		std::string Name;
 		ShaderDataType Type;
@@ -32,3 +32,5 @@ namespace Spyen {
         }
 	};
 }
+
+
