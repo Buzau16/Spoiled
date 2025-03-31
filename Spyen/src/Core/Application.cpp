@@ -18,9 +18,9 @@ namespace Spyen {
 		Renderer::Init();
 	}
 
-	void AddQuad(const Vector2& position, const Color& color)
+	void AddQuad(const Vector2& vect)
 	{
-		Renderer::SubmitQuad(position, color);
+		Renderer::AddQuad(vect);
 	}
 
 	void Run()
@@ -32,11 +32,12 @@ namespace Spyen {
 
 			Time::UpdateTime();
 
-			s_Window.Clear(s_BackgroundColor.r, s_BackgroundColor.b, s_BackgroundColor.g);
+			s_Window.Clear(s_BackgroundColor.r, s_BackgroundColor.g, s_BackgroundColor.b);
 
 			// Render
 			Renderer::BeginBatch();
-			Renderer::SubmitQuad({ 0.0f, 0.0f, 0.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
+			for (int i = 0; i < Renderer::s_QuadVertices.size(); i++)
+				Renderer::SubmitQuad(Renderer::s_QuadVertices[i]);
 			Renderer::EndBatch();
 
 			s_Window.SwapBuffers();

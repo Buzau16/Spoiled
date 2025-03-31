@@ -4,10 +4,10 @@
 
 namespace Spyen {
 
-	struct QuadVertex {
+	/*struct QuadVertex {
 		glm::vec2 Position;
 		glm::vec4 Color;
-	};
+	};*/
 
 	struct RendererData {
 		static const uint32_t MaxQuads = 10000;
@@ -20,8 +20,8 @@ namespace Spyen {
 		std::shared_ptr<IndexBuffer> QuadIndexBuffer;
 		std::shared_ptr<Shader> QuadShader;
 
-		QuadVertex* QuadVertexBufferBase;
-		QuadVertex* QuadVertexBufferPtr;
+		Vector2* QuadVertexBufferBase;
+		Vector2* QuadVertexBufferPtr;
 		uint32_t QuadIndexCount = 0;
 
 		glm::vec2 QuadPositions[4];
@@ -29,13 +29,14 @@ namespace Spyen {
 	};
 
 	static RendererData s_Data;
+	std::vector<Vector2> Renderer::s_QuadVertices;
 
 	void Renderer::Init() {
-		s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVertices];
+		s_Data.QuadVertexBufferBase = new Vector2[s_Data.MaxVertices];
 		s_Data.QuadVertexArray = VertexArray::Create();
 		s_Data.QuadVertexArray->Bind();
 
-		s_Data.QuadVertexBuffer = VertexBuffer::Create(nullptr, s_Data.MaxVertices * sizeof(QuadVertex));
+		s_Data.QuadVertexBuffer = VertexBuffer::Create(nullptr, s_Data.MaxVertices * sizeof(Vector2));
 		s_Data.QuadVertexBuffer->Bind();
 		s_Data.QuadVertexBuffer->SetLayout({
 			{ ShaderDataType::Float2, "a_Position" },
@@ -95,18 +96,17 @@ namespace Spyen {
 		s_Data.QuadIndexCount = 0;
 	}
 
-	void Renderer::SubmitQuad(const Vector2& position, const Color& color) {
-		if (s_Data.QuadIndexCount >= RendererData::MaxIndices) {
+	void Renderer::SubmitQuad(const Vector2& vect) {
+		if (s_Data.QuadIndexCount >= s_Data.MaxIndices) {
 			EndBatch();
 			Flush();
 			BeginBatch();
 		}
 
-		glm::vec4 col = { color.r, color.g, color.b, 1.0f };
-
 		for (int i = 0; i < 4; i++) {
-			s_Data.QuadVertexBufferPtr->Position = s_Data.QuadPositions[i];
-			s_Data.QuadVertexBufferPtr->Color = col;
+			s_Data.QuadVertexBufferPtr->x = s_Data.QuadPositions[i].x + vect.x;
+			s_Data.QuadVertexBufferPtr->y = s_Data.QuadPositions[i].y + vect.y;
+			s_Data.QuadVertexBufferPtr->color = vect.color;
 			s_Data.QuadVertexBufferPtr++;
 		}
 		s_Data.QuadIndexCount += 6;
