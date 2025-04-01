@@ -4,6 +4,8 @@
 
 
 namespace Spyen {
+	
+
 	void SetBackgroundColor(float r, float g, float b, float a)
 	{
 		s_BackgroundColor = { r, g, b };
@@ -18,27 +20,37 @@ namespace Spyen {
 		Renderer::Init();
 	}
 
-	void AddQuad(const Vector2& vect)
+	void AddEntity(std::unique_ptr<Entity> entity)
 	{
-		Renderer::AddQuad(vect);
+		s_Entities.push_back(std::move(entity));
 	}
 
 	void Run()
 	{
-		
+		float LastFrameTime = 0.0f;
+
 		while (s_Window.IsOpen()) {
 
 			s_Window.PollEvents();
-
-			Time::UpdateTime();
+			
+			float time = glfwGetTime();
+			Timestep ts = time - LastFrameTime;
+			LastFrameTime = time;
 
 			s_Window.Clear(s_BackgroundColor.r, s_BackgroundColor.g, s_BackgroundColor.b);
 
-			// Render
 			Renderer::BeginBatch();
-			for (int i = 0; i < Renderer::s_QuadVertices.size(); i++)
-				Renderer::SubmitQuad(Renderer::s_QuadVertices[i]);
+			// Update + Render
+			for (auto& entity : s_Entities) {
+                for (auto& entity : s_Entities) {
+                    entity->OnUpdate(ts);
+                    entity->OnRender();
+                }
+				entity->OnRender();
+			}
+			
 			Renderer::EndBatch();
+			Renderer::Flush();
 
 			s_Window.SwapBuffers();
 		}

@@ -14,11 +14,13 @@ struct Color {
 
 struct Vector2 {
 	float x, y;
+	float rotation;
+	float scale;
 	Color color;
 
 
-	Vector2() : x(0.0f), y(0.0f), color(0.0f, 0.0f, 0.0f, 1.0f) {}
-	Vector2(float x, float y, Color color) : x(x), y(y), color(color) {}
+	Vector2() : x(0.0f), y(0.0f), rotation(0.f), scale(0.0f), color(0.0f, 0.0f, 0.0f, 1.0f) {}
+	Vector2(float x, float y, float rotation, float scale, Color color) : x(x), y(y), rotation(rotation), scale(scale), color(color) {}
 
 };
 

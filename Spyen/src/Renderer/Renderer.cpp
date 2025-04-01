@@ -4,10 +4,10 @@
 
 namespace Spyen {
 
-	/*struct QuadVertex {
-		glm::vec2 Position;
+	struct QuadVertex {
+		glm::vec3 Position;
 		glm::vec4 Color;
-	};*/
+	};
 
 	struct RendererData {
 		static const uint32_t MaxQuads = 10000;
@@ -20,34 +20,33 @@ namespace Spyen {
 		std::shared_ptr<IndexBuffer> QuadIndexBuffer;
 		std::shared_ptr<Shader> QuadShader;
 
-		Vector2* QuadVertexBufferBase;
-		Vector2* QuadVertexBufferPtr;
+		QuadVertex* QuadVertexBufferBase;
+		QuadVertex* QuadVertexBufferPtr;
 		uint32_t QuadIndexCount = 0;
 
-		glm::vec2 QuadPositions[4];
+		glm::vec4 QuadPositions[4];
 
 	};
 
 	static RendererData s_Data;
-	std::vector<Vector2> Renderer::s_QuadVertices;
 
 	void Renderer::Init() {
-		s_Data.QuadVertexBufferBase = new Vector2[s_Data.MaxVertices];
+		s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVertices];
 		s_Data.QuadVertexArray = VertexArray::Create();
 		s_Data.QuadVertexArray->Bind();
 
-		s_Data.QuadVertexBuffer = VertexBuffer::Create(nullptr, s_Data.MaxVertices * sizeof(Vector2));
+		s_Data.QuadVertexBuffer = VertexBuffer::Create(nullptr, s_Data.MaxVertices * sizeof(QuadVertex));
 		s_Data.QuadVertexBuffer->Bind();
 		s_Data.QuadVertexBuffer->SetLayout({
-			{ ShaderDataType::Float2, "a_Position" },
+			{ ShaderDataType::Float3, "a_Position" },
 			{ ShaderDataType::Float4, "a_Color" }
 			});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
-		s_Data.QuadPositions[0] = { -0.5f, -0.5f };
-		s_Data.QuadPositions[1] = { 0.5f, -0.5f };
-		s_Data.QuadPositions[2] = { 0.5f, 0.5f };
-		s_Data.QuadPositions[3] = { -0.5f, 0.5f };
+		s_Data.QuadPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
+		s_Data.QuadPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
+		s_Data.QuadPositions[2] = { 0.5f, 0.5f, 0.0f, 1.0f };
+		s_Data.QuadPositions[3] = { -0.5f, 0.5f, 0.0f, 1.0f };
 
 		uint32_t* indices = new uint32_t[s_Data.MaxIndices];
 		uint32_t offset = 0;
@@ -86,7 +85,6 @@ namespace Spyen {
 	void Renderer::EndBatch() {
 		GLsizeiptr size = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase;
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, size);
-		Flush();
 	}
 
 	void Renderer::Flush() {
@@ -103,12 +101,17 @@ namespace Spyen {
 			BeginBatch();
 		}
 
-		for (int i = 0; i < 4; i++) {
-			s_Data.QuadVertexBufferPtr->x = s_Data.QuadPositions[i].x + vect.x;
-			s_Data.QuadVertexBufferPtr->y = s_Data.QuadPositions[i].y + vect.y;
-			s_Data.QuadVertexBufferPtr->color = vect.color;
-			s_Data.QuadVertexBufferPtr++;
-		}
+		glm::mat4 transform(1.0f);
+		transform = glm::translate(transform, glm::vec3(vect.x, vect.y, 0.0f));
+		transform = glm::rotate(transform, glm::radians(vect.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform = glm::scale(transform, glm::vec3(vect.scale, vect.scale, 1.0f));
+		
+        for (int i = 0; i < 4; i++) {
+            s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
+            s_Data.QuadVertexBufferPtr->Color = glm::vec4(vect.color.r, vect.color.g, vect.color.b, vect.color.a);
+            s_Data.QuadVertexBufferPtr++;
+        }
+
 		s_Data.QuadIndexCount += 6;
 	}
 

@@ -12,11 +12,8 @@ namespace Spyen {
 		static void Shutdown();
 		static void BeginBatch();
 		static void EndBatch();
-		static void AddQuad(const Vector2& vect) { s_QuadVertices.push_back(vect); };
 		static void SubmitQuad(const Vector2& vect);
 		static void Flush();
-
-		static std::vector<Vector2> s_QuadVertices;
 	};
 
 }
