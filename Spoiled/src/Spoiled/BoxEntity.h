@@ -9,4 +9,7 @@ public:
 	~BoxEntity();
 	void OnUpdate(Spyen::Timestep ts) override;
 	void OnRender() override;
+
+private:
+	float m_AnimTime = 0.0f;
 };

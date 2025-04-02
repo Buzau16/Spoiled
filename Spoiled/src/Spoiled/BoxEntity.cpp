@@ -1,4 +1,4 @@
-#include "BoxEntity.h"
+﻿#include "BoxEntity.h"
 
 BoxEntity::BoxEntity()
 {
@@ -15,8 +15,14 @@ BoxEntity::~BoxEntity()
 }
 
 void BoxEntity::OnUpdate(Spyen::Timestep ts)
-{
-	m_Rotation += 10.f * ts;
+{	
+	m_AnimTime += ts; // Crește animtime în funcție de timpul scurs
+
+	// Generăm o animație de scalare între 0.5 și 1.5 folosind funcția sin()
+	m_Scale = 1.0f + sinf(m_AnimTime * 2.0f) * 0.5f; // Modifică valoarea de scalare într-un interval de 0.5 - 1.5
+
+	// Rotația
+	m_Rotation += 10.0f * ts; // Rotește cubul cu un unghi de 10 grade pe secundă
 }
 
 void BoxEntity::OnRender()
