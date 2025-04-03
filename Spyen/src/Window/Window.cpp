@@ -44,6 +44,9 @@ namespace Spyen {
 
 		glEnable(GL_DEPTH_TEST);
 		glViewport(0, 0, width, height);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glFrontFace(GL_CCW);
 
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);

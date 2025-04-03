@@ -25,6 +25,7 @@ namespace Spyen {
 		uint32_t QuadIndexCount = 0;
 
 		glm::vec4 QuadPositions[4];
+		std::array<Spyen::Texture, MaxTextureSlots> TextureSlots;
 
 	};
 
@@ -65,7 +66,7 @@ namespace Spyen {
 		delete[] indices;
 
 
-		s_Data.QuadShader = Shader::Create("QuadShader", "C:/Users/gpro9/source/repos/SPOILED/bin/Debug-windows-x86_64/Spoiled/assets/shaders/QuadShader.vert", "C:/Users/gpro9/source/repos/SPOILED/bin/Debug-windows-x86_64/Spoiled/assets/shaders/QuadShader.frag");
+		s_Data.QuadShader = Shader::Create("QuadShader", "assets/shaders/QuadShader.vert", "assets/shaders/QuadShader.frag");
 	}
 
 	void Renderer::Shutdown() {

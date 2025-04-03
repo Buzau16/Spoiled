@@ -3,6 +3,7 @@
 #include "Renderer/VertexArray.h"
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/IndexBuffer.h"
+#include "Texture/Texture.h"
 
 namespace Spyen {
 	class Renderer
