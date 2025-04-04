@@ -1,12 +1,15 @@
 #include "spypch.h"
 #include "Renderer.h"
-
+#include "Texture.h" // Add this include to define TextureSpecs
+#include <filesystem>
 
 namespace Spyen {
 
 	struct QuadVertex {
 		glm::vec3 Position;
 		glm::vec4 Color;
+		glm::vec2 TexCoord;
+		uint32_t TexIndex;
 	};
 
 	struct RendererData {
@@ -19,12 +22,15 @@ namespace Spyen {
 		std::shared_ptr<VertexBuffer> QuadVertexBuffer;
 		std::shared_ptr<IndexBuffer> QuadIndexBuffer;
 		std::shared_ptr<Shader> QuadShader;
+		std::shared_ptr<Texture> WhiteTexture;
 
 		QuadVertex* QuadVertexBufferBase;
 		QuadVertex* QuadVertexBufferPtr;
 		uint32_t QuadIndexCount = 0;
 
 		glm::vec4 QuadPositions[4];
+		std::array<std::shared_ptr<Texture>, MaxTextureSlots> TextureSlots;
+		uint32_t TextureSlotIndex = 1; // 0 is reserved for white texture
 
 	};
 
@@ -64,8 +70,19 @@ namespace Spyen {
 		s_Data.QuadVertexArray->AddIndexBuffer(s_Data.QuadIndexBuffer);
 		delete[] indices;
 
+		s_Data.WhiteTexture = Texture::Create(TextureSpecs());
+		uint32_t whiteTextureData = 0xffffffff;
+		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
-		s_Data.QuadShader = Shader::Create("QuadShader", "C:/Users/gpro9/source/repos/SPOILED/bin/Debug-windows-x86_64/Spoiled/assets/shaders/QuadShader.vert", "C:/Users/gpro9/source/repos/SPOILED/bin/Debug-windows-x86_64/Spoiled/assets/shaders/QuadShader.frag");
+		int32_t samplers[s_Data.MaxTextureSlots];
+		for (int i = 0; i < s_Data.MaxTextureSlots; i++)
+			samplers[i] = i;
+
+		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
+
+		s_Data.QuadShader = Shader::Create("QuadShader", "assets/shaders/QuadShader.vert", "assets/shaders/QuadShader.frag");
+
+
 	}
 
 	void Renderer::Shutdown() {
@@ -85,6 +102,9 @@ namespace Spyen {
 	void Renderer::EndBatch() {
 		GLsizeiptr size = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase;
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, size);
+
+		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
+			s_Data.TextureSlots[i]->Bind(i);
 	}
 
 	void Renderer::Flush() {
@@ -94,7 +114,30 @@ namespace Spyen {
 		s_Data.QuadIndexCount = 0;
 	}
 
-	void Renderer::SubmitQuad(const Vector2& vect) {
+	void Renderer::SubmitQuad(const Vector2& vect)
+	{
+		SubmitQuad(vect, 0.0f, 1.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+	}
+
+	void Renderer::SubmitQuad(const Vector2& vect, float rotation)
+	{
+		SubmitQuad(vect, rotation, 1.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+	}
+
+	void Renderer::SubmitQuad(const Vector2& vect, float rotation, float scale)
+	{
+		SubmitQuad(vect, rotation, scale, { 1.0f, 1.0f, 1.0f, 1.0f });
+	}
+
+	void Renderer::SubmitQuad(const Vector2& vect, float rotation, float scale, Color color) {
+
+		glm::vec2 textCoords[4] = {
+			{ 0.0f, 0.0f },
+			{ 1.0f, 0.0f },
+			{ 1.0f, 1.0f },
+			{ 0.0f, 1.0f }
+		};
+
 		if (s_Data.QuadIndexCount >= s_Data.MaxIndices) {
 			EndBatch();
 			Flush();
@@ -103,16 +146,54 @@ namespace Spyen {
 
 		glm::mat4 transform(1.0f);
 		transform = glm::translate(transform, glm::vec3(vect.x, vect.y, 0.0f));
-		transform = glm::rotate(transform, glm::radians(vect.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-		transform = glm::scale(transform, glm::vec3(vect.scale, vect.scale, 1.0f));
+		transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform = glm::scale(transform, glm::vec3(scale, scale, 1.0f));
 		
         for (int i = 0; i < 4; i++) {
             s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
-            s_Data.QuadVertexBufferPtr->Color = glm::vec4(vect.color.r, vect.color.g, vect.color.b, vect.color.a);
+            s_Data.QuadVertexBufferPtr->Color = glm::vec4(color.r, color.g, color.b, color.a);
+			s_Data.QuadVertexBufferPtr->TexCoord = textCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = 0;
             s_Data.QuadVertexBufferPtr++;
         }
 
 		s_Data.QuadIndexCount += 6;
 	}
 
-}	
+	void Renderer::SubmitQuad(const Vector2& vect, float rotation, float scale, const std::shared_ptr<Texture>& texture)
+	{
+		glm::vec2 textCoords[4] = {
+			{ 0.0f, 0.0f },
+			{ 1.0f, 0.0f },
+			{ 1.0f, 1.0f },
+			{ 0.0f, 1.0f }
+		};
+		if (s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots)
+		{
+			EndBatch();
+			Flush();
+			BeginBatch();
+		}
+
+		if (s_Data.QuadIndexCount >= s_Data.MaxIndices) {
+			EndBatch();
+			Flush();
+			BeginBatch();
+		}
+
+		glm::mat4 transform(1.0f);
+		transform = glm::translate(transform, glm::vec3(vect.x, vect.y, 0.0f));
+		transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform = glm::scale(transform, glm::vec3(scale, scale, 1.0f));
+
+		for (int i = 0; i < 4; i++) {
+			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
+			s_Data.QuadVertexBufferPtr->Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			s_Data.QuadVertexBufferPtr->TexCoord = textCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = texture->GetRendererID();
+			s_Data.QuadVertexBufferPtr++;
+		}
+		s_Data.QuadIndexCount += 6;
+	}
+
+}
