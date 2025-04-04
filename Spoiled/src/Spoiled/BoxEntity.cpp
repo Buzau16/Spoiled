@@ -27,5 +27,5 @@ void BoxEntity::OnUpdate(Spyen::Timestep ts)
 
 void BoxEntity::OnRender()
 {
-	Spyen::Renderer::SubmitQuad({m_X, m_Y}, m_Rotation, m_Scale);
+	Spyen::Renderer::SubmitQuad({ m_X, m_Y, m_Rotation, m_Scale, m_Color });
 }

@@ -1,4 +1,4 @@
-﻿#include "spypch.h"
+#include "spypch.h"
 
 #include "Window.h"
 
@@ -43,9 +43,6 @@ namespace Spyen {
 		}
 
 		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE); 
-		glCullFace(GL_BACK);     
-		glFrontFace(GL_CCW);
 		glViewport(0, 0, width, height);
 
 
