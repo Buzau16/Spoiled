@@ -9,9 +9,9 @@ namespace Spyen {
 			assert(data, "Failed to load texture: " + path);
 			return;
 		}
-		m_Specs.Format = (m_Specs.BitDepth == 4) ? GL_RGBA : GL_RGB;
+		m_Specs.Format = (m_Specs.BitDepth == 4) ? GL_RGBA8 : GL_RGB8;
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		glTextureStorage2D(m_RendererID, 1, m_Specs.Format, m_Specs.Width, m_Specs.Height);
+		glTextureStorage2D(m_RendererID, 1, GL_RGB8, m_Specs.Width, m_Specs.Height);
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -29,11 +29,16 @@ namespace Spyen {
 	{
 		m_Specs = specs;
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		glTextureStorage2D(m_RendererID, 1, m_Specs.Format, m_Specs.Width, m_Specs.Height);
+		glTextureStorage2D(m_RendererID, 1, GL_RGBA8, m_Specs.Width, m_Specs.Height);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		GLenum error = glGetError();
+		if (error != GL_NO_ERROR) {
+			std::cout << "Error in Texture creation: " << error << std::endl;
+		}
 	}
 
 	Texture::~Texture()

@@ -1,16 +1,17 @@
 #include "spypch.h"
 #include "Renderer.h"
-#include "Texture.h" // Add this include to define TextureSpecs
 #include <filesystem>
 
 namespace Spyen {
 
 	struct QuadVertex {
-		glm::vec3 Position;
+		glm::vec2 Position;
 		glm::vec4 Color;
-		glm::vec2 TexCoord;
-		uint32_t TexIndex;
+		glm::vec2 TexCoords;
+		float TexIndex;
 	};
+
+	static uint32_t s_DrawCalls = 0;
 
 	struct RendererData {
 		static const uint32_t MaxQuads = 10000;
@@ -30,22 +31,26 @@ namespace Spyen {
 
 		glm::vec4 QuadPositions[4];
 		std::array<std::shared_ptr<Texture>, MaxTextureSlots> TextureSlots;
-		uint32_t TextureSlotIndex = 1; // 0 is reserved for white texture
+		uint32_t TextureIndex = 1; // 0 is the white texture used for just colors
 
 	};
 
 	static RendererData s_Data;
 
 	void Renderer::Init() {
+		// Creating the VAO and the buffer
 		s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVertices];
 		s_Data.QuadVertexArray = VertexArray::Create();
 		s_Data.QuadVertexArray->Bind();
 
+		// Creating the VBO and setting the layout
 		s_Data.QuadVertexBuffer = VertexBuffer::Create(nullptr, s_Data.MaxVertices * sizeof(QuadVertex));
 		s_Data.QuadVertexBuffer->Bind();
 		s_Data.QuadVertexBuffer->SetLayout({
-			{ ShaderDataType::Float3, "a_Position" },
-			{ ShaderDataType::Float4, "a_Color" }
+			{ ShaderDataType::Float2, "a_Position" },
+			{ ShaderDataType::Float4, "a_Color" },
+			{ ShaderDataType::Float2, "a_TexCoords"},
+			{ ShaderDataType::Float, "a_TexIndex"}
 			});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
@@ -54,6 +59,7 @@ namespace Spyen {
 		s_Data.QuadPositions[2] = { 0.5f, 0.5f, 0.0f, 1.0f };
 		s_Data.QuadPositions[3] = { -0.5f, 0.5f, 0.0f, 1.0f };
 
+		// Indices stuff
 		uint32_t* indices = new uint32_t[s_Data.MaxIndices];
 		uint32_t offset = 0;
 		for (uint32_t i = 0; i < s_Data.MaxIndices; i += 6) {
@@ -70,18 +76,20 @@ namespace Spyen {
 		s_Data.QuadVertexArray->AddIndexBuffer(s_Data.QuadIndexBuffer);
 		delete[] indices;
 
-		s_Data.WhiteTexture = Texture::Create(TextureSpecs());
-		uint32_t whiteTextureData = 0xffffffff;
-		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
-
-		int32_t samplers[s_Data.MaxTextureSlots];
-		for (int i = 0; i < s_Data.MaxTextureSlots; i++)
-			samplers[i] = i;
-
-		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
-
 		s_Data.QuadShader = Shader::Create("QuadShader", "assets/shaders/QuadShader.vert", "assets/shaders/QuadShader.frag");
 
+		// Creating the White Texture(1x1) if the user wants to render a color and not a texture
+		s_Data.WhiteTexture = Texture::Create(TextureSpecs{ 1,1, GL_RGBA });
+		uint32_t whitetx = 0xFFFFFFFF;
+		s_Data.WhiteTexture->SetData(&whitetx, sizeof(uint32_t));
+		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
+		int32_t samplers[32];
+		for (size_t i = 0; i < s_Data.MaxTextureSlots; i++) {
+			samplers[i] = i;
+		}
+
+		s_Data.QuadShader->Bind();
+		s_Data.QuadShader->SetUniform1iv("u_Textures", s_Data.MaxTextureSlots, samplers);
 
 	}
 
@@ -95,25 +103,32 @@ namespace Spyen {
 	}
 
 	void Renderer::BeginBatch() {
+		// Reseting the buffer pointer for a new batch
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 		s_Data.QuadIndexCount = 0;
+		s_Data.TextureIndex = 1;
+		s_DrawCalls = 0;
 	}
 
 	void Renderer::EndBatch() {
+		// Sending the data in the buffer to the gpu
 		GLsizeiptr size = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase;
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, size);
-
-		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
+		for (int32_t i = 0; i < s_Data.TextureIndex; i++)
 			s_Data.TextureSlots[i]->Bind(i);
+		Flush();
+		std::cout << "Draw Calls: " << s_DrawCalls << '\n';
 	}
 
 	void Renderer::Flush() {
+		// the draw itself
 		s_Data.QuadShader->Bind();
 		s_Data.QuadVertexArray->Bind();
 		glDrawElements(GL_TRIANGLES, s_Data.QuadIndexCount, GL_UNSIGNED_INT, nullptr);
-		s_Data.QuadIndexCount = 0;
+		s_DrawCalls++;
 	}
 
+	///////////// Functions for submiting a quad to the renderer //////////////////////////
 	void Renderer::SubmitQuad(const Vector2& vect)
 	{
 		SubmitQuad(vect, 0.0f, 1.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
@@ -152,15 +167,16 @@ namespace Spyen {
         for (int i = 0; i < 4; i++) {
             s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
             s_Data.QuadVertexBufferPtr->Color = glm::vec4(color.r, color.g, color.b, color.a);
-			s_Data.QuadVertexBufferPtr->TexCoord = textCoords[i];
-			s_Data.QuadVertexBufferPtr->TexIndex = 0;
+			s_Data.QuadVertexBufferPtr->TexCoords = textCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = 0.0f;
             s_Data.QuadVertexBufferPtr++;
         }
 
 		s_Data.QuadIndexCount += 6;
 	}
 
-	void Renderer::SubmitQuad(const Vector2& vect, float rotation, float scale, const std::shared_ptr<Texture>& texture)
+	// TODO
+	/*void Renderer::SubmitQuad(const Vector2& vect, float rotation, float scale, const std::shared_ptr<Texture>& texture)
 	{
 		glm::vec2 textCoords[4] = {
 			{ 0.0f, 0.0f },
@@ -194,6 +210,6 @@ namespace Spyen {
 			s_Data.QuadVertexBufferPtr++;
 		}
 		s_Data.QuadIndexCount += 6;
-	}
+	}*/
 
 }

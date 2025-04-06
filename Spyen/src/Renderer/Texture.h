@@ -7,9 +7,9 @@
 namespace Spyen
 {
 	struct TextureSpecs {
-		int32_t Width, Height;
-		int32_t BitDepth;
-		GLenum Format;
+		int32_t Width = 1, Height = 1;
+		int32_t BitDepth = 4;
+		GLenum Format = GL_RGBA;
 	};
 
 	class Texture

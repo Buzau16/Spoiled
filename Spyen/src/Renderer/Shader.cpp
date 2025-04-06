@@ -116,6 +116,12 @@ namespace Spyen
 		glUniform1i(location, value);
 	}
 
+	void Shader::SetUniform1iv(const std::string& name, int count, const int* value)
+	{
+		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform1iv(location, count, value);
+	}
+
 	void Shader::SetUniform1f(const std::string& name, float value)
 	{
 		GLuint location = glGetUniformLocation(m_RendererID, name.c_str());

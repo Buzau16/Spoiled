@@ -50,7 +50,6 @@ namespace Spyen {
 			}
 			
 			Renderer::EndBatch();
-			Renderer::Flush();
 
 			s_Window.SwapBuffers();
 		}

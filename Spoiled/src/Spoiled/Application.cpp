@@ -7,7 +7,6 @@ int main() {
 	Spyen::SetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	Spyen::Init();
-	BoxEntity box;
 	Spyen::AddEntity(std::make_unique<BoxEntity>());
 
 	Spyen::Run();
