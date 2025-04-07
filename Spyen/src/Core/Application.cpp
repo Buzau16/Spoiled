@@ -4,7 +4,7 @@
 
 
 namespace Spyen {
-	
+
 
 	void SetBackgroundColor(float r, float g, float b, float a)
 	{
@@ -32,7 +32,7 @@ namespace Spyen {
 		while (s_Window.IsOpen()) {
 
 			s_Window.PollEvents();
-			
+
 			float time = glfwGetTime();
 			Timestep ts = time - LastFrameTime;
 			LastFrameTime = time;
@@ -42,13 +42,10 @@ namespace Spyen {
 			Renderer::BeginBatch();
 			// Update + Render
 			for (auto& entity : s_Entities) {
-                for (auto& entity : s_Entities) {
-                    entity->OnUpdate(ts);
-                    entity->OnRender();
-                }
+				entity->OnUpdate(ts);
 				entity->OnRender();
 			}
-			
+
 			Renderer::EndBatch();
 
 			s_Window.SwapBuffers();
