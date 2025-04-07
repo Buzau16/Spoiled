@@ -29,10 +29,15 @@ namespace Spyen
 		  static std::shared_ptr<Texture> Create(const std::string& path);
 		  static std::shared_ptr<Texture> Create(const TextureSpecs& specs);
 
+		  bool operator==(const Texture& other) const
+		  {
+			  return m_RendererID == other.GetRendererID();
+		  }
+
 	private:
 		TextureSpecs m_Specs;
 		uint32_t m_RendererID;
-		
+		GLenum m_InternalFormat, m_DataFormat;
 	};
 }
 

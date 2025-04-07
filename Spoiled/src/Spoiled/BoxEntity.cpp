@@ -2,11 +2,11 @@
 
 BoxEntity::BoxEntity()
 {
-	m_X = 0.0f;
-	m_Y = 0.0f;
+	m_Position = { 0.0f, 0.0f };
 	m_Scale = 1.0f;
 	m_Rotation = 0.0f;
 	m_Color = { 1.0f, 0.2f, 0.3f, .5f };
+	m_Texture = std::make_shared<Spyen::Texture>("assets/textures/player.png");
 }
 
 BoxEntity::~BoxEntity()
@@ -32,5 +32,5 @@ void BoxEntity::OnUpdate(Spyen::Timestep ts)
 
 void BoxEntity::OnRender()
 {
-	Spyen::Renderer::SubmitQuad(m_Position, m_Rotation, m_Scale, m_Color);
+	Spyen::Renderer::SubmitQuad(m_Position, m_Rotation, m_Scale, m_Texture);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include "Time/Timestep.h"
+#include "Renderer/Texture.h"
 
 namespace Spyen
 {
@@ -17,5 +18,6 @@ namespace Spyen
 		float m_Scale;
 		float m_Rotation;
 		Color m_Color;
+		std::shared_ptr<Texture> m_Texture;
 	};
 }
