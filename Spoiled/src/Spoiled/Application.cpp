@@ -3,10 +3,11 @@
 #include "BoxEntity.h"
 
 int main() {
-	Spyen::InitWindow("Spyen", 1600, 900);
+	Spyen::Init("Spyen", 1600, 900);
+	Spyen::AssetManager::Load<Spyen::Texture>("player", "assets/textures/player.png");
 	Spyen::SetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-	Spyen::Init();
+	
 	Spyen::AddEntity(std::make_unique<BoxEntity>());
 
 	Spyen::Run();

@@ -4,3 +4,4 @@
 
 #include "Core/Application.h"
 #include "Time/Timestep.h"
+#include "AssetManager/AssetManager.h"

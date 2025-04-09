@@ -7,8 +7,16 @@ namespace Spyen {
 		stbi_set_flip_vertically_on_load(true);
 		unsigned char* data = stbi_load(path.c_str(), &m_Specs.Width, &m_Specs.Height, &m_Specs.BitDepth, 0);
 		if (!data) {
-			std::cerr << "Failed to load texture at: " << path << "\n";
-			return;
+			SPY_CORE_ERROR("Failed to load texture: {0}. Using a Fallback Texture. Check if the file is in the specified directory and for any typos", path);
+
+			m_Specs.Width = 1;
+			m_Specs.Height = 1;
+			m_Specs.BitDepth = 4;
+			data = (unsigned char*)malloc(4);
+			data[0] = 0xf3;
+			data[1] = 0x05;
+			data[2] = 0xf7;
+			data[3] = 0xff;
 		}
 
 		m_InternalFormat = (m_Specs.BitDepth == 4) ? GL_RGBA8 : GL_RGB8;
@@ -24,14 +32,18 @@ namespace Spyen {
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Specs.Width, m_Specs.Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
-		//glGenerateMipmap(m_RendererID);
 
 		GLenum error = glGetError();
-		if (error != GL_NO_ERROR) {
-			std::cerr << "Error in Texture creation with code: " << error << std::endl;
-		}
+		SPY_CORE_ASSERT(error == GL_NO_ERROR, "Error in Texture creation with code: {0}", error);
 
-		stbi_image_free(data);
+		if (data) {
+			if (stbi_failure_reason()) {
+				free(data);
+			}
+			else {
+				stbi_image_free(data);
+			}
+		}
 	}
 
 	Texture::Texture(const TextureSpecs& specs)
@@ -48,9 +60,7 @@ namespace Spyen {
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		GLenum error = glGetError();
-		if (error != GL_NO_ERROR) {
-			std::cerr << "Error in Texture creation with code: " << error << std::endl;
-		}
+		SPY_CORE_ASSERT(error == GL_NO_ERROR, "Error in Texture creation with code: {0}", error);
 	}
 
 	Texture::~Texture()

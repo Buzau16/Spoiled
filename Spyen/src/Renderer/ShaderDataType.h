@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include <cassert>
+#include "Core/Log.h"
 
 namespace Spyen
 {
@@ -23,7 +23,7 @@ namespace Spyen
 		case ShaderDataType::Int4:		return 4 * 4;
 		case ShaderDataType::Bool:		return 1;
 		}
-		assert(false && "Invalind ShaderDataType");
+		SPY_CORE_ASSERT(false, "Unknown ShaderDataType");
 		return -1;
 	}
 }

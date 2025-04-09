@@ -9,28 +9,27 @@ namespace Spyen {
 	{
 	}
 
-	void Window::Init(const char* title, uint32_t width, uint32_t height)
+	void Window::Init(const std::string& title, uint32_t width, uint32_t height)
 	{
+		SPY_CORE_INFO("Creating Window: {0} with dimensions: ({1} x {2})", title, width, height);
 		m_Data.Title = title;
 		m_Data.Width = width;
 		m_Data.Height = height;
 
-		if (!glfwInit()) {
-			std::cerr << "Failed to initialize GLFW" << std::endl;
-			return;
-		}
+		
+
+		if (!glfwInit())
+			SPY_CORE_CRITICAL("Failed to initialize Glew");
+
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-		m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-		if (!m_Window) {
-			std::cerr << "Failed to create window" << std::endl;
-			glfwTerminate();
-			return;
-		}
+		m_Window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+		SPY_CORE_ASSERT(m_Window, "Failed to create window");
+
 		glfwMakeContextCurrent(m_Window);
 
 		glewExperimental = GL_TRUE;

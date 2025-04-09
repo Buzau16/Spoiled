@@ -22,4 +22,5 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Core/Base.h"
+#include "Core/Log.h"
 

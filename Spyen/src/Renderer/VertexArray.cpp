@@ -16,7 +16,7 @@ namespace Spyen {
 		case ShaderDataType::Int4:     return GL_INT;
 		case ShaderDataType::Bool:     return GL_BOOL;
 		}
-		assert(false, "Unknown ShaderDataType!");
+		SPY_CORE_ASSERT(false, "Unknown ShaderDataType!");
 		return 0;
 	}
 

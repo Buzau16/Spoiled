@@ -9,9 +9,7 @@ namespace Spyen {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * count, indices, GL_STATIC_DRAW);
 
 		GLenum error = glGetError();
-		if (error != GL_NO_ERROR) {
-			std::cout << "Error in IndexBuffer creation: " << error << std::endl;
-		}
+		SPY_CORE_ASSERT(error == GL_NO_ERROR, "Error in IndexBuffer constructor: ", error);
 	}
 	IndexBuffer::~IndexBuffer()
 	{
@@ -23,9 +21,7 @@ namespace Spyen {
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 		GLenum error = glGetError();
-		if (error != GL_NO_ERROR) {
-			std::cout << "Error in IndexBuffer bind: " << error << std::endl;
-		}
+		SPY_CORE_ASSERT(error == GL_NO_ERROR, "Error in IndexBuffer::Bind: ", error);
 	}
 	void IndexBuffer::Unbind() const
 	{

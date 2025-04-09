@@ -9,9 +9,7 @@ namespace Spyen {
 		glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
 
 		GLenum error = glGetError();
-		if (error != GL_NO_ERROR) {
-			std::cout << "Error in VertexBuffer creation: " << error << std::endl;
-		}
+		SPY_CORE_ASSERT(error == GL_NO_ERROR, "Failed to create vertex buffer. With error code {0}", error);
 	}
 
 	VertexBuffer::~VertexBuffer()
@@ -32,9 +30,7 @@ namespace Spyen {
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 
 		GLenum error = glGetError();
-		if (error != GL_NO_ERROR) {
-			std::cout << "Error in SetData: " << error << std::endl;
-		}
+		SPY_CORE_ASSERT(error == GL_NO_ERROR, "Failed to set data to vertex buffer. With error code {0}", error);
 	}
 	std::shared_ptr<VertexBuffer> VertexBuffer::Create(const void* data, uint32_t size)
 	{

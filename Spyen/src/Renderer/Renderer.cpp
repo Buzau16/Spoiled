@@ -38,6 +38,8 @@ namespace Spyen {
 	static RendererData s_Data;
 
 	void Renderer::Init() {
+		SPY_CORE_INFO("Initializing Renderer");
+
 		// Creating the VAO and the buffer
 		s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVertices];
 		s_Data.QuadVertexArray = VertexArray::Create();

@@ -23,7 +23,7 @@ namespace Spyen {
 		Window();
 		~Window() = default;
 		
-		void Init(const char* title, uint32_t width, uint32_t height);
+		void Init(const std::string& title,  uint32_t width, uint32_t height);
 		void Destroy();
 		void SetVSync(bool enabled);
 		void SwapBuffers();
@@ -45,8 +45,6 @@ namespace Spyen {
 
 		GLFWwindow* m_Window;
 		WindowData m_Data;
-
-
 	};
 
 }

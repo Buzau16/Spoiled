@@ -27,7 +27,7 @@ namespace Spyen
             case ShaderDataType::Int4:   return 4;
             case ShaderDataType::Bool:   return 1;
             }
-            assert(false && "error idk in BufferElement");
+            SPY_CORE_ASSERT(false, "Unknown ShaderDataType!");
             return 0;
         }
 	};

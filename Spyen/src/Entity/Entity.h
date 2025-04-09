@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include "Time/Timestep.h"
 #include "Renderer/Texture.h"
+#include "AssetManager/AssetManager.h"
 
 namespace Spyen
 {
