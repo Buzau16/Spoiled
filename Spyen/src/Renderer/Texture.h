@@ -25,6 +25,7 @@ namespace Spyen
 		  uint32_t GetRendererID() const { return m_RendererID; }
 
 		  void SetData(void* data, uint32_t size);
+		  void SetData(void* data, uint32_t size, uint32_t x, uint32_t y, uint32_t xOff, uint32_t yOff);
 
 		  static std::shared_ptr<Texture> Create(const std::string& path);
 		  static std::shared_ptr<Texture> Create(const TextureSpecs& specs);

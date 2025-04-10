@@ -7,7 +7,6 @@ BoxEntity::BoxEntity()
 	m_Rotation = 0.0f;
 	m_Color = { 1.0f, 0.2f, 0.3f, .5f };
 	m_Texture = Spyen::AssetManager::Get<Spyen::Texture>("player");
-	//m_Texture = std::make_shared<Spyen::Texture>("assets/textures/player.png");
 }
 
 BoxEntity::~BoxEntity()
