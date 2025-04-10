@@ -11,6 +11,7 @@ namespace Spyen {
 
 		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
 		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
+		//tatic void LogToFile(std::shared_ptr<spdlog::logger>&);
 	private:
 		static std::shared_ptr<spdlog::logger> s_CoreLogger;
 		static std::shared_ptr<spdlog::logger> s_ClientLogger;
@@ -26,11 +27,11 @@ namespace Spyen {
 #define SPY_CORE_CRITICAL(...) ::Spyen::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 // Client log macros
-#define SPY_TRACE(...)         ::Spyen::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define SPY_INFO(...)          ::Spyen::Log::GetClientLogger()->info(__VA_ARGS__)
-#define SPY_WARN(...)          ::Spyen::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define SPY_ERROR(...)         ::Spyen::Log::GetClientLogger()->error(__VA_ARGS__)
-#define SPY_CRITICAL(...)      ::Spyen::Log::GetClientLogger()->critical(__VA_ARGS__)
+#define SPY_TRACE(...)			 ::Spyen::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define SPY_INFO(...)			 ::Spyen::Log::GetClientLogger()->info(__VA_ARGS__)
+#define SPY_WARN(...)			 ::Spyen::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define SPY_ERROR(...)			 ::Spyen::Log::GetClientLogger()->error(__VA_ARGS__)
+#define SPY_CRITICAL(...)		 ::Spyen::Log::GetClientLogger()->critical(__VA_ARGS__)
 
 #ifdef SP_DEBUG
 #define SPY_ASSERT(x, ...) { if(!(x)) { SPY_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }

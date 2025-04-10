@@ -7,6 +7,7 @@ int main() {
 	Spyen::AssetManager::Load<Spyen::Texture>("player", "assets/textures/player.png");
 	Spyen::SetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 
+	SPY_INFO("Love it");
 	
 	Spyen::AddEntity(std::make_unique<BoxEntity>());
 
