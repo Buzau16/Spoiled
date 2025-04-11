@@ -49,6 +49,7 @@ namespace Spyen {
 
 			glfwSwapInterval(0);
 
+			Input::Update();
 			g_Window.PollEvents();
 
 			float time = glfwGetTime();
@@ -58,32 +59,20 @@ namespace Spyen {
 			g_Window.Clear(g_BackgroundColor.r, g_BackgroundColor.g, g_BackgroundColor.b);
 
 			Renderer::BeginFrame();
-			// Update + Render
+			// Update + Render on dynamic objects
 			for (auto& obj : g_DynamicObjects) {
 				obj->OnUpdate(ts);
 				obj->OnRender();
 			}
 
+			// Only render static objects
 			for (auto& obj : g_StaticObjects) {
 				obj->OnRender();
 			}
-			
-
 
 			Renderer::EndFrame();
 
 			//std::cout << "FPS: " << 1.f / ts << std::endl;
-
-			//system("cls");
-
-			//Renderer::BeginBatch();
-			//// Update + Render
-			//for (auto& entity : s_Entities) {
-			//	entity->OnUpdate(ts);
-			//	entity->OnRender();
-			//}
-
-			//Renderer::EndBatch();
 
 			g_Window.SwapBuffers();
 		}

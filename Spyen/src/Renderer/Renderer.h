@@ -9,6 +9,7 @@
 #include "Renderer/DynamicObjectRenderPass.h"
 #include "Renderer/StaticObjectRenderPass.h"
 
+#include "Input/Input.h"
 
 namespace Spyen {
 	class Renderer
@@ -30,6 +31,9 @@ namespace Spyen {
 		static void SubmitQuad(const Vector2& vect, float rotation, float scale);
 		static void SubmitQuad(const Vector2& vect, float rotation, float scale, Color color);
 		static void SubmitQuad(const Vector2& vect, float rotation, float scale, const std::shared_ptr<Texture>& texture);
+
+	private:
+		static void ToggleWireframe();
 	};
 
 }

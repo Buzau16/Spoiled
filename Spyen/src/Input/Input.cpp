@@ -1,4 +1,4 @@
-#include "spypch.h"
+﻿#include "spypch.h"
 #include "Input.h"
 
 
@@ -6,6 +6,7 @@ namespace Spyen {
 
 	std::unordered_map<KeyCode, bool> Input::s_Keys;
 	std::unordered_map<MouseCode, bool> Input::s_MouseButtons;
+	std::unordered_map<KeyCode, bool> Input::s_PrevKeys;
 	float Input::s_MouseX;
 	float Input::s_MouseY;
 	float Input::s_WindowWidth;
@@ -16,9 +17,19 @@ namespace Spyen {
 		s_Keys[code] = pressed;
 	}
 
-	bool Input::IsKeyPressed(KeyCode code)
+	bool Input::IsKeyDown(KeyCode code)
+	{
+		return s_Keys[code] && !s_PrevKeys[code];
+	}
+
+	bool Input::IsKeyPressed(KeyCode code)	
 	{
 		return s_Keys[code];
+	}
+
+	bool Input::IsKeyUp(KeyCode code)
+	{
+		return !s_Keys[code] && s_PrevKeys[code];
 	}
 
 	void Input::SetMouseButtonState(MouseCode code, bool pressed)

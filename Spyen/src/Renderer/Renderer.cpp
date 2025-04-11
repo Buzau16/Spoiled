@@ -37,6 +37,8 @@ namespace Spyen {
 		std::array<std::shared_ptr<Texture>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1; // 0 is the white texture used for just colors
 
+		bool WireframeMode = false;
+
 	};
 
 	static RendererData s_Data;
@@ -139,17 +141,26 @@ namespace Spyen {
 
 	void Renderer::BeginFrame()
 	{
+		ToggleWireframe();
+		glPolygonMode(GL_FRONT_AND_BACK, s_Data.WireframeMode ? GL_LINE : GL_FILL);
+
+		
 		s_Data.StaticObjectRenderPass->Begin();
 		s_Data.DynamicObjectRenderPass->Begin();
 	}
 
 	void Renderer::EndFrame()
 	{
+		
 		s_Data.StaticObjectRenderPass->End();
 		s_Data.DynamicObjectRenderPass->End();
 
 		s_Data.DynamicObjectRenderPass->Flush();
 		s_Data.DynamicObjectRenderPass->Flush();
+
+		/*if (s_Data.WireframeMode) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}*/
 	}
 
 	void Renderer::Submit(const StaticGameObject& obj)
@@ -197,14 +208,14 @@ namespace Spyen {
 		transform = glm::translate(transform, glm::vec3(vect.x, vect.y, 0.0f));
 		transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 		transform = glm::scale(transform, glm::vec3(scale, scale, 1.0f));
-		
-        for (int i = 0; i < 4; i++) {
-            s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
-            s_Data.QuadVertexBufferPtr->Color = glm::vec4(color.r, color.g, color.b, color.a);
+
+		for (int i = 0; i < 4; i++) {
+			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
+			s_Data.QuadVertexBufferPtr->Color = glm::vec4(color.r, color.g, color.b, color.a);
 			s_Data.QuadVertexBufferPtr->TexCoords = textCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = 0.0f;
-            s_Data.QuadVertexBufferPtr++;
-        }
+			s_Data.QuadVertexBufferPtr++;
+		}
 
 		s_Data.QuadIndexCount += 6;
 	}
@@ -258,6 +269,18 @@ namespace Spyen {
 			s_Data.QuadVertexBufferPtr++;
 		}
 		s_Data.QuadIndexCount += 6;
+	}
+
+	void Renderer::ToggleWireframe()
+	{
+		if (Input::IsKeyDown(SPK_TAB)) {
+			if (!s_Data.WireframeMode) {
+				s_Data.WireframeMode = true;
+			}
+			else {
+				s_Data.WireframeMode = false;
+			}
+		}
 	}
 
 }
