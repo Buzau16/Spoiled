@@ -14,6 +14,10 @@ namespace Spyen {
 	static uint32_t s_DrawCalls = 0;
 
 	struct RendererData {
+		std::shared_ptr<StaticObjectRenderPass> StaticObjectRenderPass;
+		std::shared_ptr<DynamicObjectRenderPass> DynamicObjectRenderPass;
+
+
 		static const uint32_t MaxQuads = 10000;
 		static const uint32_t MaxVertices = MaxQuads * 4;
 		static const uint32_t MaxIndices = MaxQuads * 6;
@@ -93,6 +97,9 @@ namespace Spyen {
 		s_Data.QuadShader->Bind();
 		s_Data.QuadShader->SetUniform1iv("u_Textures", s_Data.MaxTextureSlots, samplers);
 
+		s_Data.StaticObjectRenderPass = StaticObjectRenderPass::Create();
+		s_Data.DynamicObjectRenderPass = DynamicObjectRenderPass::Create();
+
 	}
 
 	void Renderer::Shutdown() {
@@ -128,6 +135,31 @@ namespace Spyen {
 		s_Data.QuadVertexArray->Bind();
 		glDrawElements(GL_TRIANGLES, s_Data.QuadIndexCount, GL_UNSIGNED_INT, nullptr);
 		s_DrawCalls++;
+	}
+
+	void Renderer::BeginFrame()
+	{
+		s_Data.StaticObjectRenderPass->Begin();
+		s_Data.DynamicObjectRenderPass->Begin();
+	}
+
+	void Renderer::EndFrame()
+	{
+		s_Data.StaticObjectRenderPass->End();
+		s_Data.DynamicObjectRenderPass->End();
+
+		s_Data.DynamicObjectRenderPass->Flush();
+		s_Data.DynamicObjectRenderPass->Flush();
+	}
+
+	void Renderer::Submit(const StaticGameObject& obj)
+	{
+		s_Data.StaticObjectRenderPass->Submit(obj);
+	}
+
+	void Renderer::Submit(const DynamicGameObject& obj)
+	{
+		s_Data.DynamicObjectRenderPass->Submit(obj);
 	}
 
 	///////////// Functions for submiting a quad to the renderer //////////////////////////

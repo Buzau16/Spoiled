@@ -4,6 +4,11 @@
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/IndexBuffer.h"
 #include "Renderer/Texture.h"
+#include "GameObjects/StaticGameObject.h"
+#include "GameObjects/DynamicGameObject.h"
+#include "Renderer/DynamicObjectRenderPass.h"
+#include "Renderer/StaticObjectRenderPass.h"
+
 
 namespace Spyen {
 	class Renderer
@@ -14,6 +19,11 @@ namespace Spyen {
 		static void BeginBatch();
 		static void EndBatch();
 		static void Flush();
+
+		static void BeginFrame();
+		static void EndFrame();
+		static void Submit(const StaticGameObject& obj);
+		static void Submit(const DynamicGameObject& obj);
 
 		static void SubmitQuad(const Vector2& vect);
 		static void SubmitQuad(const Vector2& vect, float rotation);

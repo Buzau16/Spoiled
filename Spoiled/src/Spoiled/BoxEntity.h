@@ -2,7 +2,7 @@
 #include <Spyen.h>
 #include <Time/Timestep.h>
 
-class BoxEntity : public Spyen::Entity
+class BoxEntity : public Spyen::DynamicGameObject
 {
 public:
 	BoxEntity();

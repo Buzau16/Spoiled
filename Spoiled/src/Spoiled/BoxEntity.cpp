@@ -32,5 +32,5 @@ void BoxEntity::OnUpdate(Spyen::Timestep ts)
 
 void BoxEntity::OnRender()
 {
-	Spyen::Renderer::SubmitQuad(m_Position, m_Rotation, m_Scale, m_Texture);
+	Spyen::Renderer::Submit(*this);
 }
