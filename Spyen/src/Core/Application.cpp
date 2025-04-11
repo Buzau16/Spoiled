@@ -31,11 +31,13 @@ namespace Spyen {
 
 	void AddStaticObject(std::unique_ptr<StaticGameObject> obj)
 	{
+		obj->OnCreate();
 		g_StaticObjects.push_back(std::move(obj));
 	}
 
 	void AddDynamicObject(std::unique_ptr<DynamicGameObject> obj)
 	{
+		obj->OnCreate();
 		g_DynamicObjects.push_back(std::move(obj));
 	}
 
@@ -57,21 +59,22 @@ namespace Spyen {
 
 			Renderer::BeginFrame();
 			// Update + Render
-			for (auto& obj : g_StaticObjects) {
-				obj->OnUpdate(ts);
-				obj->OnRender();
-			}
 			for (auto& obj : g_DynamicObjects) {
 				obj->OnUpdate(ts);
 				obj->OnRender();
 			}
 
+			for (auto& obj : g_StaticObjects) {
+				obj->OnRender();
+			}
+			
+
 
 			Renderer::EndFrame();
 
-			std::cout << "FPS: " << 1.f / ts << std::endl;
+			//std::cout << "FPS: " << 1.f / ts << std::endl;
 
-			system("cls");
+			//system("cls");
 
 			//Renderer::BeginBatch();
 			//// Update + Render

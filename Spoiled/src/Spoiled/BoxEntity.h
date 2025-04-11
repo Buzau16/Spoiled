@@ -5,10 +5,9 @@
 class BoxEntity : public Spyen::DynamicGameObject
 {
 public:
-	BoxEntity();
-	~BoxEntity();
 	void OnUpdate(Spyen::Timestep ts) override;
 	void OnRender() override;
+	void OnCreate() override;
 
 private:
 	float m_AnimTime = 0.0f;
