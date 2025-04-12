@@ -1,17 +1,12 @@
 ﻿#include "BoxEntity.h"
 
-BoxEntity::BoxEntity()
+void BoxEntity::OnCreate()
 {
-	m_Position = { 0.0f, 0.0f };
-	m_Scale = 1.0f;
-	m_Rotation = 0.0f;
-	m_Color = { 1.0f, 0.2f, 0.3f, .5f };
-	m_Texture = Spyen::AssetManager::Get<Spyen::Texture>("player");
-}
-
-BoxEntity::~BoxEntity()
-{
-
+	SetPosition(0.0f, 0.0f);
+	SetScale(1.0f);
+	SetRotation(0.0f);
+	SetColor(1.0f, 0.2f, 0.3f, 1.0f);
+	SetTexture(Spyen::AssetManager::Get<Spyen::Texture>("player"));
 }
 
 void BoxEntity::OnUpdate(Spyen::Timestep ts)
@@ -32,5 +27,7 @@ void BoxEntity::OnUpdate(Spyen::Timestep ts)
 
 void BoxEntity::OnRender()
 {
-	Spyen::Renderer::SubmitQuad(m_Position, m_Rotation, m_Scale, m_Texture);
+	Spyen::Renderer::Submit(*this);
 }
+
+

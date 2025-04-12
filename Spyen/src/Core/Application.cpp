@@ -2,6 +2,12 @@
 #include "spypch.h"
 #include "Application.h"
 
+#include <cstdlib>
+
+Color g_BackgroundColor = {0.0f, 0.0f, 0.0f, 1.0f};
+Spyen::Window g_Window;
+std::vector<std::unique_ptr<Spyen::StaticGameObject>> g_StaticObjects;
+std::vector<std::unique_ptr<Spyen::DynamicGameObject>> g_DynamicObjects;
 
 namespace Spyen {
 
@@ -9,51 +15,68 @@ namespace Spyen {
 
 	void SetBackgroundColor(float r, float g, float b, float a)
 	{
-		s_BackgroundColor = { r, g, b };
+		g_BackgroundColor = { r, g, b };
 	}
 
-	void AddEntity(std::unique_ptr<Entity> entity)
-	{
-		//SPY_CORE_INFO("Adding Entity: {0}", entity->GetName());
-		s_Entities.push_back(std::move(entity));
-	}
 
 	void Init(const std::string& title, uint32_t width, uint32_t height)
 	{
 		Log::Init();
 		SPY_CORE_INFO("Initializing Spyen");
 		SPY_CORE_INFO("Initializing Logger");
-		s_Window.Init(title, height, height);
+		g_Window.Init(title, height, height);
 		Renderer::Init();
 		AssetManager::Init();
+	}
+
+	void AddStaticObject(std::unique_ptr<StaticGameObject> obj)
+	{
+		obj->OnCreate();
+		g_StaticObjects.push_back(std::move(obj));
+	}
+
+	void AddDynamicObject(std::unique_ptr<DynamicGameObject> obj)
+	{
+		obj->OnCreate();
+		g_DynamicObjects.push_back(std::move(obj));
 	}
 
 	void Run()
 	{
 		float LastFrameTime = 0.0f;
 
-		while (s_Window.IsOpen()) {
+		while (g_Window.IsOpen()) {
 
-			s_Window.PollEvents();
+			glfwSwapInterval(0);
+
+			Input::Update();
+			g_Window.PollEvents();
 
 			float time = glfwGetTime();
 			Timestep ts = time - LastFrameTime;
 			LastFrameTime = time;
 
-			s_Window.Clear(s_BackgroundColor.r, s_BackgroundColor.g, s_BackgroundColor.b);
+			g_Window.Clear(g_BackgroundColor.r, g_BackgroundColor.g, g_BackgroundColor.b);
 
-			Renderer::BeginBatch();
-			// Update + Render
-			for (auto& entity : s_Entities) {
-				entity->OnUpdate(ts);
-				entity->OnRender();
+			Renderer::BeginFrame();
+			// Update + Render on dynamic objects
+			for (auto& obj : g_DynamicObjects) {
+				obj->OnUpdate(ts);
+				obj->OnRender();
 			}
 
-			Renderer::EndBatch();
+			// Only render static objects
+			for (auto& obj : g_StaticObjects) {
+				obj->OnRender();
+			}
 
-			s_Window.SwapBuffers();
+			Renderer::EndFrame();
+
+			//std::cout << "FPS: " << 1.f / ts << std::endl;
+
+			g_Window.SwapBuffers();
 		}
-		s_Window.Destroy();
+		g_Window.Destroy();
 		Renderer::Shutdown();
 	}
 }

@@ -14,6 +14,10 @@ namespace Spyen {
 	static uint32_t s_DrawCalls = 0;
 
 	struct RendererData {
+		std::shared_ptr<StaticObjectRenderPass> StaticObjectRenderPass;
+		std::shared_ptr<DynamicObjectRenderPass> DynamicObjectRenderPass;
+
+
 		static const uint32_t MaxQuads = 10000;
 		static const uint32_t MaxVertices = MaxQuads * 4;
 		static const uint32_t MaxIndices = MaxQuads * 6;
@@ -32,6 +36,8 @@ namespace Spyen {
 		glm::vec4 QuadPositions[4];
 		std::array<std::shared_ptr<Texture>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1; // 0 is the white texture used for just colors
+
+		bool WireframeMode = false;
 
 	};
 
@@ -93,6 +99,9 @@ namespace Spyen {
 		s_Data.QuadShader->Bind();
 		s_Data.QuadShader->SetUniform1iv("u_Textures", s_Data.MaxTextureSlots, samplers);
 
+		s_Data.StaticObjectRenderPass = StaticObjectRenderPass::Create();
+		s_Data.DynamicObjectRenderPass = DynamicObjectRenderPass::Create();
+
 	}
 
 	void Renderer::Shutdown() {
@@ -130,6 +139,40 @@ namespace Spyen {
 		s_DrawCalls++;
 	}
 
+	void Renderer::BeginFrame()
+	{
+		ToggleWireframe();
+		glPolygonMode(GL_FRONT_AND_BACK, s_Data.WireframeMode ? GL_LINE : GL_FILL);
+
+		
+		s_Data.StaticObjectRenderPass->Begin();
+		s_Data.DynamicObjectRenderPass->Begin();
+	}
+
+	void Renderer::EndFrame()
+	{
+		
+		s_Data.StaticObjectRenderPass->End();
+		s_Data.DynamicObjectRenderPass->End();
+
+		s_Data.DynamicObjectRenderPass->Flush();
+		s_Data.DynamicObjectRenderPass->Flush();
+
+		/*if (s_Data.WireframeMode) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}*/
+	}
+
+	void Renderer::Submit(const StaticGameObject& obj)
+	{
+		s_Data.StaticObjectRenderPass->Submit(obj);
+	}
+
+	void Renderer::Submit(const DynamicGameObject& obj)
+	{
+		s_Data.DynamicObjectRenderPass->Submit(obj);
+	}
+
 	///////////// Functions for submiting a quad to the renderer //////////////////////////
 	void Renderer::SubmitQuad(const Vector2& vect)
 	{
@@ -165,14 +208,14 @@ namespace Spyen {
 		transform = glm::translate(transform, glm::vec3(vect.x, vect.y, 0.0f));
 		transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 		transform = glm::scale(transform, glm::vec3(scale, scale, 1.0f));
-		
-        for (int i = 0; i < 4; i++) {
-            s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
-            s_Data.QuadVertexBufferPtr->Color = glm::vec4(color.r, color.g, color.b, color.a);
+
+		for (int i = 0; i < 4; i++) {
+			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
+			s_Data.QuadVertexBufferPtr->Color = glm::vec4(color.r, color.g, color.b, color.a);
 			s_Data.QuadVertexBufferPtr->TexCoords = textCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = 0.0f;
-            s_Data.QuadVertexBufferPtr++;
-        }
+			s_Data.QuadVertexBufferPtr++;
+		}
 
 		s_Data.QuadIndexCount += 6;
 	}
@@ -226,6 +269,18 @@ namespace Spyen {
 			s_Data.QuadVertexBufferPtr++;
 		}
 		s_Data.QuadIndexCount += 6;
+	}
+
+	void Renderer::ToggleWireframe()
+	{
+		if (Input::IsKeyDown(SPK_TAB)) {
+			if (!s_Data.WireframeMode) {
+				s_Data.WireframeMode = true;
+			}
+			else {
+				s_Data.WireframeMode = false;
+			}
+		}
 	}
 
 }

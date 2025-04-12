@@ -7,9 +7,14 @@ namespace Spyen {
 	class Input
 	{
 	public:
+		static void Update() { s_PrevKeys = s_Keys; };
+
+
 		/////// KEYBOARD /////////
 		static void SetKeyState(KeyCode code, bool pressed);
+		static bool IsKeyDown(KeyCode code);
 		static bool IsKeyPressed(KeyCode code);
+		static bool IsKeyUp(KeyCode code);
 
 		/////// MOUSE ///////////
 		static void SetMouseButtonState(MouseCode code, bool pressed);
@@ -28,6 +33,7 @@ namespace Spyen {
 
 	private:
 		static std::unordered_map<KeyCode, bool> s_Keys;
+		static std::unordered_map<KeyCode, bool> s_PrevKeys;
 		static std::unordered_map<MouseCode, bool> s_MouseButtons;
 		static float s_MouseX;
 		static float s_MouseY;
