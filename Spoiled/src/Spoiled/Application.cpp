@@ -12,8 +12,8 @@ int main() {
 	Spyen::Scene scene;
 	scene.AddObject(std::make_unique<BoxEntity>());
 	scene.AddObject(std::make_unique<TextObj>());
-	Spyen::Engine::AddScene(std::move(scene));
-	Spyen::Engine::SetActiveScene(std::move(scene));
+	Spyen::Engine::AddScene(scene);
+	Spyen::Engine::SetActiveScene(scene);
 	
 	/*Spyen::Engine::AddDynamicObject(std::make_unique<BoxEntity>());
 	Spyen::Engine::AddStaticObject(std::make_unique<TextObj>());*/

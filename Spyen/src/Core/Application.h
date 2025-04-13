@@ -20,8 +20,8 @@ namespace Spyen {
 		/*static void AddStaticObject(std::unique_ptr<StaticGameObject> obj);
 		static void AddDynamicObject(std::unique_ptr<DynamicGameObject> obj);*/
 
-		static void AddScene(Scene scene) { s_EngineData.Scenes.push_back(std::move(scene)); };
-		static void SetActiveScene(Scene scene) { s_EngineData.ActiveScene = std::move(scene); };
+		static void AddScene(Scene scene) { s_EngineData.Scenes.push_back(scene); };
+		static void SetActiveScene(Scene scene) { s_EngineData.ActiveScene = scene; };
 
 
 		static void Run();
