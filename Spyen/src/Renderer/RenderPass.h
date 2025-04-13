@@ -1,4 +1,5 @@
 #pragma once
+#include "Renderer/Renderable2D.h"
 
 namespace Spyen {
 	class RenderPass {

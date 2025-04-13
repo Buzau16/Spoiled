@@ -31,6 +31,8 @@ namespace Spyen {
 		static void SubmitQuad(const Vector2& vect, float rotation, float scale);
 		static void SubmitQuad(const Vector2& vect, float rotation, float scale, Color color);
 		static void SubmitQuad(const Vector2& vect, float rotation, float scale, const std::shared_ptr<Texture>& texture);
+		static void SubmitQuad(const glm::mat4& transform, const std::shared_ptr<Texture>& texture);
+		static void SubmitQuad(const glm::mat4& transform, Color color);
 
 	private:
 		static void ToggleWireframe();

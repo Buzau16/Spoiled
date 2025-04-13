@@ -6,16 +6,17 @@ namespace Spyen {
 	{
 		Renderer::BeginBatch();
 	}
-	void DynamicObjectRenderPass::Submit(const DynamicGameObject& obj)
+	void DynamicObjectRenderPass::Submit(const Renderable2D& obj)
 	{
-		if (obj.GetTexture()) {
-			Renderer::SubmitQuad(obj.GetPosition(), obj.GetRotation(), obj.GetScale(), obj.GetTexture());
-			return;
+		SPY_CORE_ASSERT(!obj.isStatic, "Trying to render a static object in a Dynamic Object RenderPass");
+		if (obj.texture) {
+			Renderer::SubmitQuad(obj.transform, obj.texture);
 		}
 		else {
-			Renderer::SubmitQuad(obj.GetPosition(), obj.GetRotation(), obj.GetScale(), obj.GetColor());
+			Renderer::SubmitQuad(obj.transform, obj.color);
 		}
 	}
+
 	void DynamicObjectRenderPass::Flush()
 	{
 		Renderer::Flush();

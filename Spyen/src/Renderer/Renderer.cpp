@@ -157,20 +157,16 @@ namespace Spyen {
 
 		s_Data.DynamicObjectRenderPass->Flush();
 		s_Data.DynamicObjectRenderPass->Flush();
-
-		/*if (s_Data.WireframeMode) {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		}*/
 	}
 
 	void Renderer::Submit(const StaticGameObject& obj)
 	{
-		s_Data.StaticObjectRenderPass->Submit(obj);
+		s_Data.StaticObjectRenderPass->Submit(CreateRenderable2D(obj));
 	}
 
 	void Renderer::Submit(const DynamicGameObject& obj)
 	{
-		s_Data.DynamicObjectRenderPass->Submit(obj);
+		s_Data.DynamicObjectRenderPass->Submit(CreateRenderable2D(obj));
 	}
 
 	///////////// Functions for submiting a quad to the renderer //////////////////////////
@@ -190,37 +186,25 @@ namespace Spyen {
 	}
 
 	void Renderer::SubmitQuad(const Vector2& vect, float rotation, float scale, Color color) {
-
-		glm::vec2 textCoords[4] = {
-			{ 0.0f, 0.0f },
-			{ 1.0f, 0.0f },
-			{ 1.0f, 1.0f },
-			{ 0.0f, 1.0f }
-		};
-
-		if (s_Data.QuadIndexCount >= s_Data.MaxIndices) {
-			EndBatch();
-			Flush();
-			BeginBatch();
-		}
-
 		glm::mat4 transform(1.0f);
 		transform = glm::translate(transform, glm::vec3(vect.x, vect.y, 0.0f));
 		transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 		transform = glm::scale(transform, glm::vec3(scale, scale, 1.0f));
 
-		for (int i = 0; i < 4; i++) {
-			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
-			s_Data.QuadVertexBufferPtr->Color = glm::vec4(color.r, color.g, color.b, color.a);
-			s_Data.QuadVertexBufferPtr->TexCoords = textCoords[i];
-			s_Data.QuadVertexBufferPtr->TexIndex = 0.0f;
-			s_Data.QuadVertexBufferPtr++;
-		}
-
-		s_Data.QuadIndexCount += 6;
+		SubmitQuad(transform, color);
 	}
 
 	void Renderer::SubmitQuad(const Vector2& vect, float rotation, float scale, const std::shared_ptr<Texture>& texture)
+	{
+		glm::mat4 transform(1.0f);
+		transform = glm::translate(transform, glm::vec3(vect.x, vect.y, 0.0f));
+		transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform = glm::scale(transform, glm::vec3(scale, scale, 1.0f));
+
+		SubmitQuad(transform, texture);
+	}
+
+	void Renderer::SubmitQuad(const glm::mat4& transform, const std::shared_ptr<Texture>& texture)
 	{
 		glm::vec2 textCoords[4] = {
 			{ 0.0f, 0.0f },
@@ -256,11 +240,6 @@ namespace Spyen {
 			s_Data.TextureSlotIndex++;
 		}
 
-		glm::mat4 transform(1.0f);
-		transform = glm::translate(transform, glm::vec3(vect.x, vect.y, 0.0f));
-		transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-		transform = glm::scale(transform, glm::vec3(scale, scale, 1.0f));
-
 		for (int i = 0; i < 4; i++) {
 			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
 			s_Data.QuadVertexBufferPtr->Color = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -268,6 +247,32 @@ namespace Spyen {
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr++;
 		}
+		s_Data.QuadIndexCount += 6;
+	}
+
+	void Renderer::SubmitQuad(const glm::mat4& transform, Color color)
+	{
+		glm::vec2 textCoords[4] = {
+			{ 0.0f, 0.0f },
+			{ 1.0f, 0.0f },
+			{ 1.0f, 1.0f },
+			{ 0.0f, 1.0f }
+		};
+
+		if (s_Data.QuadIndexCount >= s_Data.MaxIndices) {
+			EndBatch();
+			Flush();
+			BeginBatch();
+		}
+
+		for (int i = 0; i < 4; i++) {
+			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadPositions[i];
+			s_Data.QuadVertexBufferPtr->Color = glm::vec4(color.r, color.g, color.b, color.a);
+			s_Data.QuadVertexBufferPtr->TexCoords = textCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = 0.0f;
+			s_Data.QuadVertexBufferPtr++;
+		}
+
 		s_Data.QuadIndexCount += 6;
 	}
 

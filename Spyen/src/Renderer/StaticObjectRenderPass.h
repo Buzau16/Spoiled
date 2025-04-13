@@ -11,7 +11,7 @@ namespace Spyen {
 		~StaticObjectRenderPass() = default;
 
 		void Begin() override;
-		void Submit(const StaticGameObject& obj);
+		void Submit(const Renderable2D& obj);;
 		void Flush() override;
 		void End() override;
 
