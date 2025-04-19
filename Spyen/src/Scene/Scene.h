@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "GameObjects/StaticGameObject.h"
 #include "GameObjects/DynamicGameObject.h"
 #include "Renderer/Renderer.h"

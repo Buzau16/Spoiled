@@ -1,6 +1,9 @@
 
 #include "spypch.h"
 #include "Application.h"
+#ifdef SP_DEBUG
+#include <vld.h>
+#endif
 
 #include <cstdlib>
 
@@ -43,22 +46,11 @@ namespace Spyen {
 			s_EngineData.Window.Clear(s_EngineData.BackgroundColor.r, s_EngineData.BackgroundColor.g, s_EngineData.BackgroundColor.b);
 
 			Renderer::BeginFrame();
-			// Update + Render on dynamic objects
-			//for (auto& obj : s_EngineData.DynamicObjects) {
-			//	obj->OnUpdate(ts);
-			//	obj->OnRender();
-			//}
-
-			//// Only render static objects
-			//for (auto& obj : s_EngineData.StaticObjects) {
-			//	obj->OnRender();
 			
 			s_EngineData.ActiveScene.OnUpdate(ts);
 			s_EngineData.ActiveScene.OnRender();
 
 			Renderer::EndFrame();
-
-			//std::cout << "FPS: " << 1.f / ts << std::endl;
 
 			s_EngineData.Window.SwapBuffers();
 		}

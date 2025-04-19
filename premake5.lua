@@ -56,6 +56,9 @@ project "Spyen"
 		defines "SP_DEBUG"
 		runtime "Debug"
 		symbols "On"
+		includedirs{
+			"%{prj.name}/vendor/vld/include"
+		}
 
 		
 	filter "configurations:Release"
@@ -102,7 +105,7 @@ project "Spoiled"
 		"Spyen",
 		"glew32",
 		"glfw3",
-		"opengl32",
+		"opengl32"
 	}
 
 	filter "system:windows"
@@ -119,6 +122,15 @@ project "Spoiled"
 		runtime "Debug"
 		symbols "On"
 		linkoptions { "/NODEFAULTLIB:MSVCRT" }
+		includedirs{
+			"Spyen/vendor/vld/include"
+		}
+		libdirs{
+			"Spyen/vendor/vld/lib/Win64"
+		}
+		links{
+			"vld"
+		}
 		
 	filter "configurations:Release"
 		defines "SP_RELEASE"

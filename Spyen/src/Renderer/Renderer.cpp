@@ -141,7 +141,10 @@ namespace Spyen {
 
 	void Renderer::BeginFrame()
 	{
+
+#ifdef SP_DEBUG
 		ToggleWireframe();
+#endif
 		glPolygonMode(GL_FRONT_AND_BACK, s_Data.WireframeMode ? GL_LINE : GL_FILL);
 
 		

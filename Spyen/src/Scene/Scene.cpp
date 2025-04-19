@@ -5,16 +5,14 @@
 namespace Spyen {
 	void Scene::OnRender()
 	{
-		SPY_CORE_INFO("static obj size: {0}", m_StaticGameObjects.size());
-		for (auto& obj : m_StaticGameObjects) {
-			SPY_CORE_INFO("Rendering static obj");
-			obj->OnRender();
-		}
-
+		SPY_CORE_INFO("Current scene object size: {0}", m_StaticGameObjects.size() + m_DynamicGameObjects.size());
 		for (auto& obj : m_DynamicGameObjects) {
-			SPY_CORE_INFO("Rendering dinamic obj");
 			obj->OnRender();
 		}
+		for (auto& obj : m_StaticGameObjects) {
+			
+			obj->OnRender();
+		}	
 	}
 	void Scene::OnUpdate(Timestep ts)
 	{

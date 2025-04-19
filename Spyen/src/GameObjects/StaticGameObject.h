@@ -31,7 +31,6 @@ namespace Spyen {
 		void SetTexture(std::shared_ptr<Texture> texture) { m_Texture = texture; };
 
 	protected:
-
 		Vector2 m_Position;
 		float m_Rotation;
 		float m_Scale;
