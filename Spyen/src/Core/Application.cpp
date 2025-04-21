@@ -47,8 +47,8 @@ namespace Spyen {
 
 			Renderer::BeginFrame();
 			
-			s_EngineData.ActiveScene.OnUpdate(ts);
-			s_EngineData.ActiveScene.OnRender();
+			s_EngineData.ActiveScene->OnUpdate(ts);
+			s_EngineData.ActiveScene->OnRender();
 
 			Renderer::EndFrame();
 
