@@ -1,82 +1,60 @@
 
 #include "spypch.h"
 #include "Application.h"
+#ifdef SP_DEBUG
+#include <vld.h>
+#endif
 
 #include <cstdlib>
 
-Color g_BackgroundColor = {0.0f, 0.0f, 0.0f, 1.0f};
-Spyen::Window g_Window;
-std::vector<std::unique_ptr<Spyen::StaticGameObject>> g_StaticObjects;
-std::vector<std::unique_ptr<Spyen::DynamicGameObject>> g_DynamicObjects;
+
 
 namespace Spyen {
 
-	
+	Engine::Data Engine::s_EngineData;
 
-	void SetBackgroundColor(float r, float g, float b, float a)
+	void Engine::SetBackgroundColor(float r, float g, float b, float a)
 	{
-		g_BackgroundColor = { r, g, b };
+		s_EngineData.BackgroundColor = { r, g, b };
 	}
 
-
-	void Init(const std::string& title, uint32_t width, uint32_t height)
+	void Engine::Init(const std::string& title, uint32_t width, uint32_t height)
 	{
 		Log::Init();
 		SPY_CORE_INFO("Initializing Spyen");
 		SPY_CORE_INFO("Initializing Logger");
-		g_Window.Init(title, height, height);
+		s_EngineData.Window.Init(title, height, height);
 		Renderer::Init();
 		AssetManager::Init();
 	}
 
-	void AddStaticObject(std::unique_ptr<StaticGameObject> obj)
-	{
-		obj->OnCreate();
-		g_StaticObjects.push_back(std::move(obj));
-	}
-
-	void AddDynamicObject(std::unique_ptr<DynamicGameObject> obj)
-	{
-		obj->OnCreate();
-		g_DynamicObjects.push_back(std::move(obj));
-	}
-
-	void Run()
+	void Engine::Run()
 	{
 		float LastFrameTime = 0.0f;
 
-		while (g_Window.IsOpen()) {
+		while (s_EngineData.Window.IsOpen()) {
 
 			glfwSwapInterval(0);
 
 			Input::Update();
-			g_Window.PollEvents();
+			s_EngineData.Window.PollEvents();
 
 			float time = glfwGetTime();
 			Timestep ts = time - LastFrameTime;
 			LastFrameTime = time;
 
-			g_Window.Clear(g_BackgroundColor.r, g_BackgroundColor.g, g_BackgroundColor.b);
+			s_EngineData.Window.Clear(s_EngineData.BackgroundColor.r, s_EngineData.BackgroundColor.g, s_EngineData.BackgroundColor.b);
 
 			Renderer::BeginFrame();
-			// Update + Render on dynamic objects
-			for (auto& obj : g_DynamicObjects) {
-				obj->OnUpdate(ts);
-				obj->OnRender();
-			}
-
-			// Only render static objects
-			for (auto& obj : g_StaticObjects) {
-				obj->OnRender();
-			}
+			
+			s_EngineData.ActiveScene->OnUpdate(ts);
+			s_EngineData.ActiveScene->OnRender();
 
 			Renderer::EndFrame();
 
-			//std::cout << "FPS: " << 1.f / ts << std::endl;
-
-			g_Window.SwapBuffers();
+			s_EngineData.Window.SwapBuffers();
 		}
-		g_Window.Destroy();
+		s_EngineData.Window.Destroy();
 		Renderer::Shutdown();
 	}
 }

@@ -6,17 +6,31 @@
 #include "Time/Timestep.h"
 #include "Renderer/Renderer.h"
 #include "Entity/Entity.h"
+#include "Scene/Scene.h"
 
 
 
 namespace Spyen {
-	void Init(const std::string& title, uint32_t width, uint32_t height);
-	void SetBackgroundColor(float r, float g, float b, float a);
-	//void InitWindow(const char* title, uint32_t width, uint32_t height);
-	
-	void AddStaticObject(std::unique_ptr<StaticGameObject> obj);
-	void AddDynamicObject(std::unique_ptr<DynamicGameObject> obj);
-	
-	void Run();
+	class Engine {
+	public:
+		static void Init(const std::string& title, uint32_t width, uint32_t height);
+		static void SetBackgroundColor(float r, float g, float b, float a);
+
+		static void AddScene(std::shared_ptr<Scene> scene) { s_EngineData.Scenes[scene->GetName()] = scene; };
+		static void SetActiveScene(const char* name) { s_EngineData.ActiveScene = s_EngineData.Scenes[name]; };
+		static std::shared_ptr<Scene> GetActiveScene() { return s_EngineData.ActiveScene; };
+
+		static void Run();
+
+	private:
+		struct Data {
+			Window Window;
+			Color BackgroundColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+			std::shared_ptr<Scene> ActiveScene;
+			std::unordered_map<std::string, std::shared_ptr<Scene>> Scenes;
+		};
+
+		static Data s_EngineData;
+	};
 }
 

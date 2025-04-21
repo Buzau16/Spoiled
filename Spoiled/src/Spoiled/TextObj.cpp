@@ -6,7 +6,6 @@ void TextObj::OnCreate()
 	SetScale(1.0f);
 	SetRotation(0.0f);
 	SetColor(1.0f, 0.2f, 0.3f, 1.0f);
-	//SetTexture(Spyen::AssetManager::Get<Spyen::Texture>("player"))
 }
 
 void TextObj::OnRender()

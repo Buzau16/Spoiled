@@ -5,6 +5,7 @@
 class BoxEntity : public Spyen::DynamicGameObject
 {
 public:
+	BoxEntity() = default;
 	void OnUpdate(Spyen::Timestep ts) override;
 	void OnRender() override;
 	void OnCreate() override;
