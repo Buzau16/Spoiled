@@ -1,5 +1,5 @@
 #include "spypch.h"
-#include "StaticObjectRenderPass.h"
+#include "Renderer/StaticObjectRenderPass.h"
 
 namespace Spyen {
 	void StaticObjectRenderPass::Begin()

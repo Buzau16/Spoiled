@@ -1,5 +1,5 @@
 #include "spypch.h"
-#include "IndexBuffer.h"
+#include "Renderer/IndexBuffer.h"
 
 namespace Spyen {
 	IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count) : m_Count(count)

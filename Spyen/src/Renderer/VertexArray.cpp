@@ -1,5 +1,5 @@
 #include "spypch.h"
-#include "VertexArray.h"
+#include "Renderer/VertexArray.h"
 
 namespace Spyen {
 	GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {

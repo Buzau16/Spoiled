@@ -1,5 +1,5 @@
 #include "spypch.h"
-#include "DynamicObjectRenderPass.h"
+#include "Renderer/DynamicObjectRenderPass.h"
 
 namespace Spyen {
 	void DynamicObjectRenderPass::Begin()
