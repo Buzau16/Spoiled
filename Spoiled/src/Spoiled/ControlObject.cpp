@@ -8,8 +8,7 @@ void ControlObject::OnCreate()
 void ControlObject::OnUpdate(Spyen::Timestep ts)
 {
 	if (Spyen::Input::IsKeyDown(Spyen::SPK_TAB)) {
-		//uint32_t t = name--;
-		//Spyen::Engine::GetActiveScene()->RemoveObjectByName(std::to_string(t));
+		
 		Spyen::Engine::GetActiveScene()->AddObject<TextObj>(std::to_string(name).c_str());
 		auto obj = Spyen::Engine::GetActiveScene()->GetObjectByName(std::to_string(name).c_str());
 
