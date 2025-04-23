@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "Renderer/Texture.h"
+#include <filesystem>
 
 namespace Spyen {
 	class SPYEN_API AssetManager
@@ -30,10 +31,16 @@ namespace Spyen {
 			SPY_CORE_CRITICAL("Error in Spyen::AssetManager::Get. Template arugument not valid!");
 		}
 
+		static void LookForAssetsDirectory();
+		static std::string& GetAssetsDirectory();
+
 	private:
 		static void LoadTexture(const std::string& name, const std::string& path);
 		static std::shared_ptr<Texture> GetTexture(const std::string& name);
+
+
 		static std::shared_ptr<Texture> m_InvalidTexture;
+		static std::string m_ShadersPath;
 
 		static std::unordered_map<std::string, std::shared_ptr<Texture>> m_Textures;
 	};

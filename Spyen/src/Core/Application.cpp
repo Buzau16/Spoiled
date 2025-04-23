@@ -27,8 +27,10 @@ namespace Spyen {
 		SPY_CORE_INFO("Initializing Spyen");
 		SPY_CORE_INFO("Initializing Logger");
 		s_EngineData.Window.Init(title, height, height);
+		AssetManager::LookForAssetsDirectory();
 		Renderer::Init();
 		AssetManager::Init();
+		
 	}
 
 	void Engine::Run()

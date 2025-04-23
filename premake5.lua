@@ -65,11 +65,16 @@ project "Spyen"
 		}
 
 		postbuildcommands{
-			("{COPYDIR} %{prj.location}/include ../bin/" .. outputdir .. "/Spyen/include"),
-			("{COPYDIR} %{prj.location}/vendor/glm/ ../bin/" .. outputdir .. "/Spyen/include"),
-			("{COPYDIR} %{prj.location}/vendor/spdlog/include/ ../bin/" .. outputdir .. "/Spyen/include"),
 			("{MKDIR} ../bin/" .. outputdir .. "/Spyen/bin"),
 			("{MKDIR} ../bin/" .. outputdir .. "/Spyen/lib"),
+
+			("{COPYDIR} %{prj.location}/include ../bin/" .. outputdir .. "/Spyen/include"),
+			("{COPYDIR} %{prj.location}/shaders ../bin/" .. outputdir .. "/Spyen/shaders"),
+			("{COPYDIR} %{prj.location}/bin ../bin/" .. outputdir .. "/Spyen/bin"),
+
+			("{COPYDIR} %{prj.location}/vendor/glm/ ../bin/" .. outputdir .. "/Spyen/include"),
+			("{COPYDIR} %{prj.location}/vendor/spdlog/include/ ../bin/" .. outputdir .. "/Spyen/include"),
+			
 			("{MOVE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Spyen/bin"),
 			("{MOVE} ../bin/" .. outputdir .. "/Spyen/Spyen.lib ../bin/" .. outputdir .. "/Spyen/lib")
 		}
