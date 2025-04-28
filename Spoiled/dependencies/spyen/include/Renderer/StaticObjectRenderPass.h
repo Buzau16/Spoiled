@@ -4,7 +4,7 @@
 #include "GameObjects/StaticGameObject.h"
 
 namespace Spyen {
-	class SPYEN_API StaticObjectRenderPass : RenderPass
+	class StaticObjectRenderPass : RenderPass
 	{
 	public:
 		StaticObjectRenderPass() = default;

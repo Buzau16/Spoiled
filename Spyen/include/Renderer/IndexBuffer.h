@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Spyen {
-	class SPYEN_API IndexBuffer
+	class IndexBuffer
 	{
 	public:
 		IndexBuffer(uint32_t* indices, uint32_t count);

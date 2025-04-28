@@ -5,7 +5,7 @@
 
 namespace Spyen
 {
-	class SPYEN_API VertexArray
+	class VertexArray
 	{
 	public:
 		VertexArray();

@@ -4,7 +4,7 @@
 
 namespace Spyen
 {
-	class SPYEN_API BufferLayout
+	class BufferLayout
 	{
 	public:
 		BufferLayout() {};

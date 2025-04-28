@@ -2,6 +2,9 @@
 
 
 // For use by Spyen Engine only!!!!!!
+
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include <iostream>
 #include <memory>
 #include <utility>
@@ -15,6 +18,8 @@
 #include <fstream>
 #include <array>
 #include <filesystem>
+
+#pragma warning(pop)
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

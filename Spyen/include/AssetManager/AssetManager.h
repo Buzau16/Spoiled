@@ -1,4 +1,6 @@
 #pragma once
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include "Core/Core.h"
 #include "Renderer/Texture.h"
 #include <filesystem>
@@ -45,3 +47,5 @@ namespace Spyen {
 		static std::unordered_map<std::string, std::shared_ptr<Texture>> m_Textures;
 	};
 }
+
+#pragma warning(pop)

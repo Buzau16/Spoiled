@@ -6,7 +6,7 @@
 #include "Core/Structs.h"
 #include "Core/Keycodes.h"
 #include "Core/Mousecodes.h"
-#include "Core/Log.h"
+#include "Core/Core.h"
 #include "Core/WeakPtr.h"
 
 #include "Time/Timestep.h"

@@ -1,4 +1,6 @@
 #pragma once
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include <unordered_map>
 #include "Core/Keycodes.h"
 #include "Core/Mousecodes.h"
@@ -41,3 +43,5 @@ namespace Spyen {
 		static float s_WindowHeight;
 	};
 }
+
+#pragma warning(pop)

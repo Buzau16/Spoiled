@@ -2,7 +2,7 @@
 #include "Renderer/BufferLayout.h"
 
 namespace Spyen {
-	class SPYEN_API VertexBuffer
+	class VertexBuffer
 	{
 	public:
 		VertexBuffer(const void* data, uint32_t size);

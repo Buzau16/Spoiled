@@ -56,7 +56,7 @@ project "Spyen"
 		cppdialect "C++20"
 		staticruntime "Off"
 		systemversion "latest"
-
+		
 		
 		defines {
 			"SP_PLATFORM_WINDOWS",

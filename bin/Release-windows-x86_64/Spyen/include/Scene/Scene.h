@@ -1,9 +1,14 @@
 ﻿#pragma once
+
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include "Core/Core.h"
 #include "GameObjects/GameObject.h"
 #include "Renderer/Renderer.h"
 #include <iostream>
 #include "Core/WeakPtr.h"
+
+
 
 namespace Spyen {
 	class SPYEN_API Scene
@@ -62,3 +67,4 @@ namespace Spyen {
 	};
 }
 
+#pragma warning(pop)

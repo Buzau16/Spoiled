@@ -4,7 +4,7 @@
 #include "GameObjects/DynamicGameObject.h"
 
 namespace Spyen {
-    class SPYEN_API DynamicObjectRenderPass : RenderPass {
+    class DynamicObjectRenderPass : RenderPass {
     public:
         DynamicObjectRenderPass() = default;
         ~DynamicObjectRenderPass() = default;

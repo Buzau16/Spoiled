@@ -1,4 +1,7 @@
 #pragma once
+#pragma warning(push)
+#pragma warning(disable: 4251)
+
 #include "Time/Timestep.h"
 #include "Renderer/Texture.h"
 #include "AssetManager/AssetManager.h"
@@ -41,4 +44,6 @@ namespace Spyen {
 	};
 
 }
+
+#pragma warning(pop)
 
