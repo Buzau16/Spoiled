@@ -1,5 +1,5 @@
 #include "spypch.h"
-#include "Texture.h"
+#include "Renderer/Texture.h"
 
 namespace Spyen {
 	Texture::Texture(const std::string& path)

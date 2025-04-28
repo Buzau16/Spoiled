@@ -1,5 +1,5 @@
 #include "spypch.h"
-#include "DynamicGameObject.h"
+#include "GameObjects/DynamicGameObject.h"
 
 
 namespace Spyen {

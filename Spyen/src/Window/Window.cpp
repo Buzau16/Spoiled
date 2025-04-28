@@ -1,6 +1,6 @@
 ﻿#include "spypch.h"
-
-#include "Window.h"
+#include "Window/Window.h"
+#include "Input/Input.h"
 
 namespace Spyen {
 	Window::Window() :

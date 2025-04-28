@@ -1,5 +1,5 @@
 #include "spypch.h"
-#include "Renderer.h"
+#include "Renderer/Renderer.h"
 #include <filesystem>
 
 namespace Spyen {
@@ -84,7 +84,9 @@ namespace Spyen {
 		s_Data.QuadVertexArray->AddIndexBuffer(s_Data.QuadIndexBuffer);
 		delete[] indices;
 
-		s_Data.QuadShader = Shader::Create("QuadShader", "assets/shaders/QuadShader.vert", "assets/shaders/QuadShader.frag");
+
+		std::string shaderpath = AssetManager::GetAssetsDirectory();
+		s_Data.QuadShader = Shader::Create("QuadShader", shaderpath + "/QuadShader.vert", shaderpath + "/QuadShader.frag");
 
 		// Creating the White Texture(1x1) if the user wants to render a color and not a texture
 		s_Data.WhiteTexture = Texture::Create(TextureSpecs{ 1,1, GL_RGBA });

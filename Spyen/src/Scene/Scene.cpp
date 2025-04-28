@@ -1,5 +1,5 @@
 #include "spypch.h"
-#include "Scene.h"
+#include "Scene/Scene.h"
 
 
 namespace Spyen {

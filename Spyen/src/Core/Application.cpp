@@ -1,6 +1,6 @@
 
 #include "spypch.h"
-#include "Application.h"
+#include "Core/Application.h"
 #ifdef SP_DEBUG
 #include <vld.h>
 #endif
@@ -8,6 +8,9 @@
 #include <cstdlib>
 
 
+
+// TODO: Modify the build system so that the .dlls are added to the ./bin folder 
+// and the shaders are addded to it as well + any other external dependencies
 
 namespace Spyen {
 
@@ -24,8 +27,10 @@ namespace Spyen {
 		SPY_CORE_INFO("Initializing Spyen");
 		SPY_CORE_INFO("Initializing Logger");
 		s_EngineData.Window.Init(title, height, height);
+		AssetManager::LookForAssetsDirectory();
 		Renderer::Init();
 		AssetManager::Init();
+		
 	}
 
 	void Engine::Run()

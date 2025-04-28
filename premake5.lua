@@ -10,7 +10,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "Spyen"
 	location "Spyen"
-	kind "StaticLib"
+	kind "SharedLib"
 	language "C++"
 	characterset "Unicode"
 	
@@ -24,32 +24,59 @@ project "Spyen"
     buildoptions { "/utf-8" }
 	
 	files {
-		"%{prj.name}/src/**.h",
+		"%{prj.name}/include/**.h",
+		"%{prj.name}/include/**.cpp",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/**.h",
 		"%{prj.name}/vendor/glm/**.hpp"
 	}
 	
 	includedirs {
+		"Spyen/include",
 		"Spyen/src",
 		"%{prj.name}/vendor/glew/include",
 		"%{prj.name}/vendor/glm",
 		"%{prj.name}/vendor/glfw/include",
 		"%{prj.name}/vendor/spdlog/include"
 	}
+
+
+	libdirs{
+		"%{prj.name}/vendor/glew/lib/Release/x64",
+		"%{prj.name}/vendor/glfw/lib"
+	}
+	
+	links {
+		"glew32",
+		"glfw3",
+		"opengl32"
+	}
 	
 	filter "system:windows"
 		cppdialect "C++20"
 		staticruntime "Off"
 		systemversion "latest"
-
+		
 		
 		defines {
 			"SP_PLATFORM_WINDOWS",
-			"SP_GL"
+			"SP_GL",
+			"SPYEN_DLL_BUILD"
 		}
 
 		postbuildcommands{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Spoiled")
+			("{MKDIR} ../bin/" .. outputdir .. "/Spyen/bin"),
+			("{MKDIR} ../bin/" .. outputdir .. "/Spyen/lib"),
+
+			("{COPYDIR} %{prj.location}/include ../bin/" .. outputdir .. "/Spyen/include"),
+			("{COPYDIR} %{prj.location}/shaders ../bin/" .. outputdir .. "/Spyen/shaders"),
+			("{COPYDIR} %{prj.location}/bin ../bin/" .. outputdir .. "/Spyen/bin"),
+
+			("{COPYDIR} %{prj.location}/vendor/glm/ ../bin/" .. outputdir .. "/Spyen/include"),
+			("{COPYDIR} %{prj.location}/vendor/spdlog/include/ ../bin/" .. outputdir .. "/Spyen/include"),
+			
+			("{MOVE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Spyen/bin"),
+			("{MOVE} ../bin/" .. outputdir .. "/Spyen/Spyen.lib ../bin/" .. outputdir .. "/Spyen/lib")
 		}
 		
 	filter "configurations:Debug"
@@ -58,6 +85,12 @@ project "Spyen"
 		symbols "On"
 		includedirs{
 			"%{prj.name}/vendor/vld/include"
+		}
+		libdirs{
+			"%{prj.name}/vendor/vld/lib/Win64"
+		}
+		links{
+			"vld"
 		}
 
 		
@@ -83,29 +116,27 @@ project "Spoiled"
 	flags { "MultiProcessorCompile" }
     buildoptions { "/utf-8" }
 
+
+	prebuildcommands{
+		("{COPYDIR} ../bin/" .. outputdir .. "/Spyen/ %{prj.location}/dependencies/spyen"),
+		("{COPYFILE} ../bin/" .. outputdir .. "/Spyen/bin/Spyen.dll %{prj.location}")
+	}
+
 	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 	
 	includedirs {
-		"Spyen/src",
-		"Spyen/vendor/glew/include",
-		"Spyen/vendor/glm",
-		"Spyen/vendor/glfw/include",
-		"Spyen/vendor/spdlog/include"
+		"Spoiled/dependencies/spyen/include"
 	}
 
 	libdirs{
-		"Spyen/vendor/glew/lib/Release/x64",
-		"Spyen/vendor/glfw/lib"
+		"Spoiled/dependencies/spyen/lib"
 	}
 	
 	links {
-		"Spyen",
-		"glew32",
-		"glfw3",
-		"opengl32"
+		"Spyen.lib"
 	}
 
 	filter "system:windows"
@@ -122,15 +153,7 @@ project "Spoiled"
 		runtime "Debug"
 		symbols "On"
 		linkoptions { "/NODEFAULTLIB:MSVCRT" }
-		includedirs{
-			"Spyen/vendor/vld/include"
-		}
-		libdirs{
-			"Spyen/vendor/vld/lib/Win64"
-		}
-		links{
-			"vld"
-		}
+		
 		
 	filter "configurations:Release"
 		defines "SP_RELEASE"

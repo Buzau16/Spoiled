@@ -1,9 +1,10 @@
-#include "spypch.h"
+﻿#include "spypch.h"
 #include "AssetManager/AssetManager.h"
 
 namespace Spyen {
 	std::unordered_map<std::string, std::shared_ptr<Texture>> AssetManager::m_Textures;
 	std::shared_ptr<Texture> AssetManager::m_InvalidTexture;
+	std::string AssetManager::m_ShadersPath;
 
 	void AssetManager::Init()
 	{
@@ -18,6 +19,22 @@ namespace Spyen {
 			0xff000000
 		};
 		m_InvalidTexture->SetData(&txData, sizeof(txData));
+	}
+
+	void AssetManager::LookForAssetsDirectory()
+	{
+		std::filesystem::path startPath = std::filesystem::current_path();
+
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(startPath)) {
+			if (entry.is_directory() && entry.path().filename() == "spyen") {
+				m_ShadersPath = entry.path().string() + "/shaders";
+			}
+		}
+	}
+
+	std::string& AssetManager::GetAssetsDirectory()
+	{
+		return m_ShadersPath;
 	}
 
 	void AssetManager::LoadTexture(const std::string& name, const std::string& path) {

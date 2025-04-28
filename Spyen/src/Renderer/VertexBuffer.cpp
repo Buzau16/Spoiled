@@ -1,5 +1,5 @@
 #include "spypch.h"
-#include "VertexBuffer.h"
+#include "Renderer/VertexBuffer.h"
 
 namespace Spyen {
 	VertexBuffer::VertexBuffer(const void* data, uint32_t size)

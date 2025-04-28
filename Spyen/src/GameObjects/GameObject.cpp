@@ -1,2 +1,2 @@
 #include "spypch.h"
-#include "GameObject.h"
+#include "GameObjects/GameObject.h"

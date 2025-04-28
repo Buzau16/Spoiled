@@ -1,7 +1,5 @@
 #include "spypch.h"
-#include "Log.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
-#include "spdlog/sinks/basic_file_sink.h"
+#include "Core/Log.h"
 
 
 namespace Spyen {
@@ -74,16 +72,4 @@ namespace Spyen {
 	
 		DeleteExecessLogFiles();
 	}
-
-
-
-	/* void Log::LogToFile(std::shared_ptr<spdlog::logger>&)
-	 {
-		 std::filesystem::create_directory("logs");
-
-		 auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(GetTimestampedFilename(), true);
-		 fileSink->set_pattern("[%T] [%l] %n: %v");
-		 s_CoreLogger->sinks().push_back(fileSink);
-		 s_ClientLogger->sinks().push_back(fileSink);
-	 }*/
 }

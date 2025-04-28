@@ -1,5 +1,5 @@
 #include "spypch.h"
-#include "Shader.h"
+#include "Renderer/Shader.h"
 namespace Spyen
 {
 	Shader::Shader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) :
