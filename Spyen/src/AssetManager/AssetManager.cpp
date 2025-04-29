@@ -21,6 +21,15 @@ namespace Spyen {
 		m_InvalidTexture->SetData(&txData, sizeof(txData));
 	}
 
+	void AssetManager::LoadSound(const std::string& name, const std::string& path)
+	{
+		SPY_CORE_INFO("Loading sound {0} AT {1}", name, path);
+		if (m_Sounds.find(name) != m_Sounds.end()) {
+			SPY_CORE_WARN("Sound: {0} already loaded at: {1}!", name, path);
+			return;
+		}
+	}
+
 	void AssetManager::LookForAssetsDirectory()
 	{
 		std::filesystem::path startPath = std::filesystem::current_path();

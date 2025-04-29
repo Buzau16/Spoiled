@@ -6,7 +6,7 @@ void BoxEntity::OnCreate()
 	SetScale(1.0f);
 	SetRotation(0.0f);
 	SetColor(1.0f, 0.2f, 0.3f, 1.0f);
-	SetTexture(Spyen::AssetManager::Get<Spyen::Texture>("player"));
+	SetTexture(Spyen::AssetManager::GetTexture("player"));
 }
 
 void BoxEntity::OnUpdate(Spyen::Timestep ts)

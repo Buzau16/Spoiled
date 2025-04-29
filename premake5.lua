@@ -37,7 +37,8 @@ project "Spyen"
 		"%{prj.name}/vendor/glew/include",
 		"%{prj.name}/vendor/glm",
 		"%{prj.name}/vendor/glfw/include",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/vendor/miniaudio"
 	}
 
 
@@ -74,6 +75,7 @@ project "Spyen"
 
 			("{COPYDIR} %{prj.location}/vendor/glm/ ../bin/" .. outputdir .. "/Spyen/include"),
 			("{COPYDIR} %{prj.location}/vendor/spdlog/include/ ../bin/" .. outputdir .. "/Spyen/include"),
+			("{COPYDIR} %{prj.location}/vendor/miniaudio/ ../bin/" .. outputdir .. "/Spyen/include"),
 			
 			("{MOVE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Spyen/bin"),
 			("{MOVE} ../bin/" .. outputdir .. "/Spyen/Spyen.lib ../bin/" .. outputdir .. "/Spyen/lib")

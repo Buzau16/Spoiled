@@ -3,8 +3,10 @@
 #pragma warning(push)
 #pragma warning(disable: 4251)
 
-#include <string>
+#include "Core/Core.h"
+#include "Core/Structs.h"
 #include <glm/glm.hpp>
+#include <string>
 #include <memory>
 
 namespace Spyen {

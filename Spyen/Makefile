@@ -19,10 +19,10 @@ endif
 # #############################################
 
 ifeq ($(origin CC), default)
-  CC = clang
+  CC = gcc
 endif
 ifeq ($(origin CXX), default)
-  CXX = clang++
+  CXX = g++
 endif
 ifeq ($(origin AR), default)
   AR = ar
@@ -34,9 +34,8 @@ GCH = $(PCH_PLACEHOLDER).gch
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-LIBS +=
 LDDEPS +=
-LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
+LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PREBUILDCMDS
 endef
 define PRELINKCMDS
@@ -44,44 +43,71 @@ endef
 
 ifeq ($(config),debug)
 TARGETDIR = ../bin/Debug-windows-x86_64/Spyen
-TARGET = $(TARGETDIR)/Spyen.lib
+TARGET = $(TARGETDIR)/Spyen.dll
 OBJDIR = ../bin-int/Debug-windows-x86_64/Spyen
-DEFINES += -DSP_PLATFORM_WINDOWS -DSP_GL -DSP_DEBUG
-INCLUDES += -Isrc -Ivendor/glew/include -Ivendor/glm -Ivendor/glfw/include -Ivendor/spdlog/include -Ivendor/vld/include
+DEFINES += -DSP_PLATFORM_WINDOWS -DSP_GL -DSPYEN_DLL_BUILD -DSP_DEBUG
+INCLUDES += -Iinclude -Isrc -Ivendor/glew/include -Ivendor/glm -Ivendor/glfw/include -Ivendor/spdlog/include -Ivendor/vld/include
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g /utf-8
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++20 /utf-8
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
+LIBS += -lglew32 -lglfw3 -lopengl32 -lvld
+ALL_LDFLAGS += $(LDFLAGS) -Lvendor/glew/lib/Release/x64 -Lvendor/glfw/lib -Lvendor/vld/lib/Win64 -L/usr/lib64 -m64 -shared -Wl,--out-implib="../bin/Debug-windows-x86_64/Spyen/Spyen.lib"
 define POSTBUILDCMDS
 	@echo Running postbuild commands
-	IF EXIST ..\bin\Debug-windows-x86_64\Spyen\Spyen.lib\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Spyen\Spyen.lib ..\bin\Debug-windows-x86_64\Spoiled > nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Spyen\Spyen.lib ..\bin\Debug-windows-x86_64\Spoiled > nul)
+	IF NOT EXIST ..\bin\Debug-windows-x86_64\Spyen\bin (mkdir ..\bin\Debug-windows-x86_64\Spyen\bin)
+	IF NOT EXIST ..\bin\Debug-windows-x86_64\Spyen\lib (mkdir ..\bin\Debug-windows-x86_64\Spyen\lib)
+	xcopy /Q /E /Y /I include ..\bin\Debug-windows-x86_64\Spyen\include
+	xcopy /Q /E /Y /I shaders ..\bin\Debug-windows-x86_64\Spyen\shaders
+	xcopy /Q /E /Y /I bin ..\bin\Debug-windows-x86_64\Spyen\bin
+	xcopy /Q /E /Y /I vendor\glm ..\bin\Debug-windows-x86_64\Spyen\include
+	xcopy /Q /E /Y /I vendor\spdlog\include ..\bin\Debug-windows-x86_64\Spyen\include
+	move /Y ..\bin\Debug-windows-x86_64\Spyen\Spyen.dll ..\bin\Debug-windows-x86_64\Spyen\bin
+	move /Y ..\bin\Debug-windows-x86_64\Spyen\Spyen.lib ..\bin\Debug-windows-x86_64\Spyen\lib
 endef
 
 else ifeq ($(config),release)
 TARGETDIR = ../bin/Release-windows-x86_64/Spyen
-TARGET = $(TARGETDIR)/Spyen.lib
+TARGET = $(TARGETDIR)/Spyen.dll
 OBJDIR = ../bin-int/Release-windows-x86_64/Spyen
-DEFINES += -DSP_PLATFORM_WINDOWS -DSP_GL -DSP_RELEASE
-INCLUDES += -Isrc -Ivendor/glew/include -Ivendor/glm -Ivendor/glfw/include -Ivendor/spdlog/include
+DEFINES += -DSP_PLATFORM_WINDOWS -DSP_GL -DSPYEN_DLL_BUILD -DSP_RELEASE
+INCLUDES += -Iinclude -Isrc -Ivendor/glew/include -Ivendor/glm -Ivendor/glfw/include -Ivendor/spdlog/include
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 /utf-8
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++20 /utf-8
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
+LIBS += -lglew32 -lglfw3 -lopengl32
+ALL_LDFLAGS += $(LDFLAGS) -Lvendor/glew/lib/Release/x64 -Lvendor/glfw/lib -L/usr/lib64 -m64 -shared -Wl,--out-implib="../bin/Release-windows-x86_64/Spyen/Spyen.lib" -s
 define POSTBUILDCMDS
 	@echo Running postbuild commands
-	IF EXIST ..\bin\Release-windows-x86_64\Spyen\Spyen.lib\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Spyen\Spyen.lib ..\bin\Release-windows-x86_64\Spoiled > nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Spyen\Spyen.lib ..\bin\Release-windows-x86_64\Spoiled > nul)
+	IF NOT EXIST ..\bin\Release-windows-x86_64\Spyen\bin (mkdir ..\bin\Release-windows-x86_64\Spyen\bin)
+	IF NOT EXIST ..\bin\Release-windows-x86_64\Spyen\lib (mkdir ..\bin\Release-windows-x86_64\Spyen\lib)
+	xcopy /Q /E /Y /I include ..\bin\Release-windows-x86_64\Spyen\include
+	xcopy /Q /E /Y /I shaders ..\bin\Release-windows-x86_64\Spyen\shaders
+	xcopy /Q /E /Y /I bin ..\bin\Release-windows-x86_64\Spyen\bin
+	xcopy /Q /E /Y /I vendor\glm ..\bin\Release-windows-x86_64\Spyen\include
+	xcopy /Q /E /Y /I vendor\spdlog\include ..\bin\Release-windows-x86_64\Spyen\include
+	move /Y ..\bin\Release-windows-x86_64\Spyen\Spyen.dll ..\bin\Release-windows-x86_64\Spyen\bin
+	move /Y ..\bin\Release-windows-x86_64\Spyen\Spyen.lib ..\bin\Release-windows-x86_64\Spyen\lib
 endef
 
 else ifeq ($(config),dist)
 TARGETDIR = ../bin/Dist-windows-x86_64/Spyen
-TARGET = $(TARGETDIR)/Spyen.lib
+TARGET = $(TARGETDIR)/Spyen.dll
 OBJDIR = ../bin-int/Dist-windows-x86_64/Spyen
-DEFINES += -DSP_PLATFORM_WINDOWS -DSP_GL -DSP_DIST
-INCLUDES += -Isrc -Ivendor/glew/include -Ivendor/glm -Ivendor/glfw/include -Ivendor/spdlog/include
+DEFINES += -DSP_PLATFORM_WINDOWS -DSP_GL -DSPYEN_DLL_BUILD -DSP_DIST
+INCLUDES += -Iinclude -Isrc -Ivendor/glew/include -Ivendor/glm -Ivendor/glfw/include -Ivendor/spdlog/include
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2 /utf-8
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++20 /utf-8
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
+LIBS += -lglew32 -lglfw3 -lopengl32
+ALL_LDFLAGS += $(LDFLAGS) -Lvendor/glew/lib/Release/x64 -Lvendor/glfw/lib -L/usr/lib64 -m64 -shared -Wl,--out-implib="../bin/Dist-windows-x86_64/Spyen/Spyen.lib" -s
 define POSTBUILDCMDS
 	@echo Running postbuild commands
-	IF EXIST ..\bin\Dist-windows-x86_64\Spyen\Spyen.lib\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Spyen\Spyen.lib ..\bin\Dist-windows-x86_64\Spoiled > nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Spyen\Spyen.lib ..\bin\Dist-windows-x86_64\Spoiled > nul)
+	IF NOT EXIST ..\bin\Dist-windows-x86_64\Spyen\bin (mkdir ..\bin\Dist-windows-x86_64\Spyen\bin)
+	IF NOT EXIST ..\bin\Dist-windows-x86_64\Spyen\lib (mkdir ..\bin\Dist-windows-x86_64\Spyen\lib)
+	xcopy /Q /E /Y /I include ..\bin\Dist-windows-x86_64\Spyen\include
+	xcopy /Q /E /Y /I shaders ..\bin\Dist-windows-x86_64\Spyen\shaders
+	xcopy /Q /E /Y /I bin ..\bin\Dist-windows-x86_64\Spyen\bin
+	xcopy /Q /E /Y /I vendor\glm ..\bin\Dist-windows-x86_64\Spyen\include
+	xcopy /Q /E /Y /I vendor\spdlog\include ..\bin\Dist-windows-x86_64\Spyen\include
+	move /Y ..\bin\Dist-windows-x86_64\Spyen\Spyen.dll ..\bin\Dist-windows-x86_64\Spyen\bin
+	move /Y ..\bin\Dist-windows-x86_64\Spyen\Spyen.lib ..\bin\Dist-windows-x86_64\Spyen\lib
 endef
 
 endif
@@ -102,7 +128,7 @@ GENERATED += $(OBJDIR)/BufferElement.o
 GENERATED += $(OBJDIR)/BufferLayout.o
 GENERATED += $(OBJDIR)/DynamicGameObject.o
 GENERATED += $(OBJDIR)/DynamicObjectRenderPass.o
-GENERATED += $(OBJDIR)/Entity.o
+GENERATED += $(OBJDIR)/GameObject.o
 GENERATED += $(OBJDIR)/IndexBuffer.o
 GENERATED += $(OBJDIR)/Input.o
 GENERATED += $(OBJDIR)/Log.o
@@ -123,7 +149,7 @@ OBJECTS += $(OBJDIR)/BufferElement.o
 OBJECTS += $(OBJDIR)/BufferLayout.o
 OBJECTS += $(OBJDIR)/DynamicGameObject.o
 OBJECTS += $(OBJDIR)/DynamicObjectRenderPass.o
-OBJECTS += $(OBJDIR)/Entity.o
+OBJECTS += $(OBJDIR)/GameObject.o
 OBJECTS += $(OBJDIR)/IndexBuffer.o
 OBJECTS += $(OBJDIR)/Input.o
 OBJECTS += $(OBJDIR)/Log.o
@@ -182,26 +208,20 @@ endif
 prebuild: | $(OBJDIR)
 	$(PREBUILDCMDS)
 
-
 ifneq (,$(PCH))
 $(OBJECTS): $(GCH) | $(PCH_PLACEHOLDER)
-
-# --- înlocuire aici ---
-# build pentru fiecare header un .gch
-$(OBJDIR)/%.h.gch: $(SRCDIR)/%.h | prebuild
-	@echo Building PCH for $<
-	$(SILENT) $(CXX) -x c++-header $(ALL_CXXFLAGS) \
-	            -c $< \
-	            -o $@ \
-	            -MF "$(@:%.gch=%.d)"
-# --- sfârşit înlocuire ---
-
+$(GCH): $(PCH) | prebuild
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) -x c++-header $(ALL_CXXFLAGS) -o "$@" -MF "$(@:%.gch=%.d)" -c "$<"
 $(PCH_PLACEHOLDER): $(GCH) | $(OBJDIR)
-	…
+ifeq (posix,$(SHELLTYPE))
+	$(SILENT) touch "$@"
+else
+	$(SILENT) echo $null >> "$@"
+endif
 else
 $(OBJECTS): | prebuild
 endif
-
 
 
 # File Rules
@@ -216,10 +236,10 @@ $(OBJDIR)/Application.o: src/Core/Application.cpp
 $(OBJDIR)/Log.o: src/Core/Log.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Entity.o: src/Entity/Entity.cpp
+$(OBJDIR)/DynamicGameObject.o: src/GameObjects/DynamicGameObject.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/DynamicGameObject.o: src/GameObjects/DynamicGameObject.cpp
+$(OBJDIR)/GameObject.o: src/GameObjects/GameObject.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/StaticGameObject.o: src/GameObjects/StaticGameObject.cpp

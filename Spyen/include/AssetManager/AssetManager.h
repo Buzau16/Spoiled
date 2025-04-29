@@ -3,6 +3,7 @@
 #pragma warning(disable: 4251)
 #include "Core/Core.h"
 #include "Renderer/Texture.h"
+#include <miniaudio/miniaudio.h>
 #include <filesystem>
 
 namespace Spyen {
@@ -14,37 +15,38 @@ namespace Spyen {
 
 		static void Init();
 
-		template<typename T>
-		static void Load(const std::string& name, const std::string& path)
-		{
-			if (std::is_same_v<T, Texture>) {
-				LoadTexture(name, path);
-				return;
-			}
-			
-			SPY_CORE_ERROR("Error in Spyen::AssetManager::Load: Template argument not valid!");
-		}
 
-		template<typename T>
-		static std::shared_ptr<T> Get(const std::string& name) {
-			if (std::is_same_v< T, Texture>) {
-				return GetTexture(name);
-			}
-			SPY_CORE_CRITICAL("Error in Spyen::AssetManager::Get. Template arugument not valid!");
-		}
+		/// <summary>
+		/// Loads an asset from a path to memory
+		/// </summary>
+		/// <param name="name: ">the name that the texture will be saved as</param>
+		/// <param name="path: ">the path to the texture</param>
+		static void LoadTexture(const std::string& name, const std::string& path);
+
+		/// <summary>
+		/// Gets a texture
+		/// </summary>
+		/// <param name="name: ">the name of the texture prevously loaded</param>
+		/// <returns>return a shared_ptr to the texture if its valid</returns>
+		static std::shared_ptr<Texture> GetTexture(const std::string& name);
+
+		/// <summary>
+		/// Loads a sound from a path to memory
+		/// </summary>
+		/// <param name="name: ">the name that the sound will be saved as</param>
+		/// <param name="path: ">the path to the sound</param>
+		static void LoadSound(const std::string& name, const std::string& path);
+
 
 		static void LookForAssetsDirectory();
 		static std::string& GetAssetsDirectory();
 
 	private:
-		static void LoadTexture(const std::string& name, const std::string& path);
-		static std::shared_ptr<Texture> GetTexture(const std::string& name);
-
-
 		static std::shared_ptr<Texture> m_InvalidTexture;
 		static std::string m_ShadersPath;
 
 		static std::unordered_map<std::string, std::shared_ptr<Texture>> m_Textures;
+		static std::unordered_map<std::string, ma_sound> m_Sounds;
 	};
 }
 

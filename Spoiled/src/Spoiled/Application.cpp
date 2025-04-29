@@ -8,8 +8,8 @@
 int main() {
 	Spyen::Engine::Init("Spyen", 1600, 900);
 
-	Spyen::AssetManager::Load<Spyen::Texture>("player", "assets/textures/player.png");
 
+	Spyen::AssetManager::LoadTexture("player", "assets/textures/Player.png");
 	Spyen::Engine::SetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 	auto scene1 = Spyen::Scene::Create("MainScene");
 	auto scene2 = Spyen::Scene::Create("SecondScene");
