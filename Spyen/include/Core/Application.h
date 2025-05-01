@@ -7,6 +7,7 @@
 #include "Renderer/Renderer.h"
 #include "Scene/Scene.h"
 #include "Core/Core.h"
+#include "Audio/SoundManager.h"
 
 
 

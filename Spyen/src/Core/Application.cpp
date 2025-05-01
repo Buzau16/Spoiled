@@ -29,6 +29,7 @@ namespace Spyen {
 		s_EngineData.Window.Init(title, height, height);
 		AssetManager::LookForAssetsDirectory();
 		Renderer::Init();
+		SoundManager::Init();
 		AssetManager::Init();
 		
 	}

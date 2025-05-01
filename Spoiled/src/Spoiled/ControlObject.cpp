@@ -32,6 +32,11 @@ void ControlObject::OnUpdate(Spyen::Timestep ts)
 			SPY_INFO("Switching scenes: SECOND -> MAIN ");
 		}
 	}
+
+	if (Spyen::Input::IsKeyDown(Spyen::SPK_P)) {
+		SPY_INFO("Playing sounds....");
+		Spyen::SoundManager::PlaySound("test");
+	}
 }
 
 void ControlObject::OnRender()

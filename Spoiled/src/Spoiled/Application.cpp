@@ -10,6 +10,7 @@ int main() {
 
 
 	Spyen::AssetManager::LoadTexture("player", "assets/textures/Player.png");
+	Spyen::AssetManager::LoadSound("test", "assets/textures/test.mp3");
 	Spyen::Engine::SetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 	auto scene1 = Spyen::Scene::Create("MainScene");
 	auto scene2 = Spyen::Scene::Create("SecondScene");
