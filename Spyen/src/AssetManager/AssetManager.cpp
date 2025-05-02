@@ -14,7 +14,6 @@ namespace Spyen {
 		SPY_CORE_INFO("Initializing AssetManager");
 
 		//Create some 2x2 checkerboard texture
-		SPY_CORE_INFO("Initializing AssetManager::Texture");
 		m_InvalidTexture = Texture::Create(TextureSpecs{ 2,2, GL_RGBA });		
 		uint32_t txData[4] = {
 			0xff000000,
@@ -23,8 +22,6 @@ namespace Spyen {
 			0xff000000
 		};
 		m_InvalidTexture->SetData(&txData, sizeof(txData));
-
-		SPY_CORE_INFO("Initializing AssetManager::Sound");
 
 	}
 

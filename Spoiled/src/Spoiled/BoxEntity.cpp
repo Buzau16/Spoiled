@@ -13,15 +13,23 @@ void BoxEntity::OnUpdate(Spyen::Timestep ts)
 {	
 	if (Spyen::Input::IsKeyPressed(Spyen::SPK_W)) {
 		m_Position.y += 1.f * ts;
+		Spyen::SoundManager::PlaySound("step");
 	}
 	if (Spyen::Input::IsKeyPressed(Spyen::SPK_S)) {
 		m_Position.y -= 1.f * ts;
+		Spyen::SoundManager::PlaySound("step");
 	}
 	if (Spyen::Input::IsKeyPressed(Spyen::SPK_D)) {
 		m_Position.x += 1.f * ts;
+		Spyen::SoundManager::PlaySound("step");
 	}
 	if (Spyen::Input::IsKeyPressed(Spyen::SPK_A)) {
 		m_Position.x -= 1.f * ts;
+		Spyen::SoundManager::PlaySound("step");
+	}
+
+	if (Spyen::Input::IsMouseButtonPressed(Spyen::SPMB_LEFT)) {
+		Spyen::SoundManager::PlaySound("shot");
 	}
 }
 

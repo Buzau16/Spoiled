@@ -46,10 +46,6 @@ namespace Spyen {
 		glCullFace(GL_BACK);     
 		glFrontFace(GL_CCW);
 		glViewport(0, 0, width, height);
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-		glFrontFace(GL_CCW);
-
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		
@@ -111,7 +107,7 @@ namespace Spyen {
 			Input::SetMouseButtonState(button, true);
 		}
 		if (action == GLFW_RELEASE) {
-			Input::SetKeyState(button, false);
+			Input::SetMouseButtonState(button, false);
 		}
 	}
 

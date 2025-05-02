@@ -10,7 +10,10 @@ int main() {
 
 
 	Spyen::AssetManager::LoadTexture("player", "assets/textures/Player.png");
-	Spyen::AssetManager::LoadSound("test", "assets/textures/test.mp3");
+	Spyen::AssetManager::LoadSound("test", "assets/sounds/test.mp3");
+	Spyen::AssetManager::LoadSound("step", "assets/sounds/step.mp3");
+	Spyen::AssetManager::LoadSound("shot", "assets/sounds/shot.mp3");
+
 	Spyen::Engine::SetBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f);
 	auto scene1 = Spyen::Scene::Create("MainScene");
 	auto scene2 = Spyen::Scene::Create("SecondScene");
@@ -18,8 +21,9 @@ int main() {
 	Spyen::Engine::AddScene(scene2);
 	Spyen::Engine::SetActiveScene("MainScene");
 
-	scene1->AddObject<ControlObject>("ControlObject");
-	scene2->AddObject<ControlObject>("ControlObject");
+	//scene1->AddObject<ControlObject>("ControlObject");
+	//scene2->AddObject<ControlObject>("ControlObject");
+	scene1->AddObject<BoxEntity>("Player");
 
 	Spyen::Engine::Run();
     return 0;

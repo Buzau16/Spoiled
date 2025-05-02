@@ -4,12 +4,15 @@
 #include "Audio/Sound.h"
 
 // shenanigans
-#define _PLAYSOUNDAPI_H_
+#ifdef PlaySound
+#undef PlaySound
+#endif
 
 namespace Spyen {
 	class SPYEN_API SoundManager {
 	public:
 		static void Init();
+		static void Shutdown();
 		
 		static std::shared_ptr<Sound> LoadSound(const std::string& path);
 		static void PlaySound(const std::string& name);

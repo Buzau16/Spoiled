@@ -61,6 +61,7 @@ namespace Spyen {
 			s_EngineData.Window.SwapBuffers();
 		}
 		s_EngineData.Window.Destroy();
+		SoundManager::Shutdown();
 		Renderer::Shutdown();
 	}
 }
