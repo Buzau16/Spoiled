@@ -74,7 +74,7 @@ project "Spyen"
 			("{COPYDIR} %{prj.location}/bin ../bin/" .. outputdir .. "/Spyen/bin"),
 
 			("{COPYDIR} %{prj.location}/vendor/glm/ ../bin/" .. outputdir .. "/Spyen/include"),
-			("{COPYDIR} %{prj.location}/vendor/spdlog/include/ ../bin/" .. outputdir .. "/Spyen/include"),
+			--("{COPYDIR} %{prj.location}/vendor/spdlog/include/ ../bin/" .. outputdir .. "/Spyen/include"),
 			("{COPYDIR} %{prj.location}/vendor/miniaudio/ ../bin/" .. outputdir .. "/Spyen/include"),
 			
 			("{MOVE} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Spyen/bin"),

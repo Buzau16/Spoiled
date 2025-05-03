@@ -4,10 +4,11 @@
 #include <string>
 
 
-/// <summary>
-/// Basic sound interface. NOT TO BE USED DIRECTLY!
-/// </summary>
+
 namespace Spyen {
+	/// <summary>
+	/// Basic sound interface. NOT TO BE USED DIRECTLY!
+	/// </summary>
 	class SPYEN_API Sound
 	{
 	public:

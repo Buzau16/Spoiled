@@ -1,10 +1,15 @@
 #include "spypch.h"
 #include "Core/Log.h"
 
+#include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
+
 
 namespace Spyen {
-	std::shared_ptr<spdlog::logger> Log::s_CoreLogger;
-	std::shared_ptr<spdlog::logger> Log::s_ClientLogger;
+	static std::shared_ptr<spdlog::logger> s_CoreLogger;
+	static std::shared_ptr<spdlog::logger> s_ClientLogger;
 
 	void DeleteExecessLogFiles() {
 		uint32_t fileCount = 0;
@@ -71,5 +76,39 @@ namespace Spyen {
 		s_ClientLogger->flush_on(spdlog::level::trace);
 	
 		DeleteExecessLogFiles();
+	}
+
+	// Core logging
+	void Log::CoreInfo(const std::string& msg) {
+		s_CoreLogger->info(msg);
+	}
+
+	void Log::CoreWarn(const std::string& msg) {
+		s_CoreLogger->warn(msg);
+	}
+
+	void Log::CoreError(const std::string& msg) {
+		s_CoreLogger->error(msg);
+	}
+
+	void Log::CoreCritical(const std::string& msg) {
+		s_CoreLogger->critical(msg);
+	}
+
+	// Client logging
+	void Log::ClientInfo(const std::string& msg) {
+		s_ClientLogger->info(msg);
+	}
+
+	void Log::ClientWarn(const std::string& msg) {
+		s_ClientLogger->warn(msg);
+	}
+
+	void Log::ClientError(const std::string& msg) {
+		s_ClientLogger->error(msg);
+	}
+
+	void Log::ClientCritical(const std::string& msg) {
+		s_ClientLogger->critical(msg);
 	}
 }

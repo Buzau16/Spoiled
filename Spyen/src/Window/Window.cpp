@@ -16,8 +16,6 @@ namespace Spyen {
 		m_Data.Width = width;
 		m_Data.Height = height;
 
-		
-
 		if (!glfwInit())
 			SPY_CORE_CRITICAL("Failed to initialize Glew");
 

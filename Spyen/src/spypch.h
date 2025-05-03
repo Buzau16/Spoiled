@@ -29,5 +29,5 @@
 #include <miniaudio/miniaudio.h>
 
 #include "Core/Structs.h"
-#include "Core/Log.h"
+#include "Core/LogMacros.h"
 

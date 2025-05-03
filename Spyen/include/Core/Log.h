@@ -3,10 +3,11 @@
 #pragma warning(push)
 #pragma warning(disable: 4251)
 
-#include "spdlog/sinks/stdout_color_sinks.h"
-#include "spdlog/sinks/basic_file_sink.h"
-#include "spdlog/spdlog.h"
-#include "spdlog/fmt/ostr.h"
+#include "Core/Core.h"
+
+namespace spdlog {
+	class logger;
+}
 
 namespace Spyen {
 	class SPYEN_API Log
@@ -14,12 +15,16 @@ namespace Spyen {
 	public:
 		static void Init();
 
-		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
-		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
+		static void CoreInfo(const std::string& msg);
+		static void CoreWarn(const std::string& msg);
+		static void CoreError(const std::string& msg);
+		static void CoreCritical(const std::string& msg);
 
-	private:
-		static std::shared_ptr<spdlog::logger> s_CoreLogger;
-		static std::shared_ptr<spdlog::logger> s_ClientLogger;
+		static void ClientInfo(const std::string& msg);
+		static void ClientWarn(const std::string& msg);
+		static void ClientError(const std::string& msg);
+		static void ClientCritical(const std::string& msg);
+
 	};
 
 }

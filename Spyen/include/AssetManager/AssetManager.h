@@ -45,15 +45,11 @@ namespace Spyen {
 		static std::shared_ptr<Sound> GetSound(const std::string& name);
 
 
+		// Used in the Spyen Engine... U can use this in your project but why?
 		static void LookForAssetsDirectory();
+
+		// Used in the Spyen Engine... U can use this in your project but why?
 		static std::string& GetAssetsDirectory();
-
-	private:
-		static std::shared_ptr<Texture> m_InvalidTexture;
-		static std::string m_ShadersPath;
-
-		static std::unordered_map<std::string, std::shared_ptr<Texture>> m_Textures;
-		static std::unordered_map<std::string, std::shared_ptr<Sound>> m_Sounds;
 	};
 }
 
