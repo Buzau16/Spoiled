@@ -26,7 +26,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <miniaudio/miniaudio.h>
 
 #include "Core/Structs.h"
-#include "Core/Log.h"
+#include "Core/LogMacros.h"
 

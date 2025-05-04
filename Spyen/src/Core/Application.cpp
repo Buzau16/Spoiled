@@ -7,18 +7,34 @@
 
 #include <cstdlib>
 
-
-
-// TODO: Modify the build system so that the .dlls are added to the ./bin folder 
-// and the shaders are addded to it as well + any other external dependencies
-
 namespace Spyen {
 
-	Engine::Data Engine::s_EngineData;
+	struct EngineData {
+		Window Window;
+		Color BackgroundColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+		std::shared_ptr<Scene> ActiveScene;
+		std::unordered_map<std::string, std::shared_ptr<Scene>> Scenes;
+	};
+
+	static EngineData s_EngineData;
 
 	void Engine::SetBackgroundColor(float r, float g, float b, float a)
 	{
 		s_EngineData.BackgroundColor = { r, g, b };
+	}
+
+	void Engine::AddScene(std::shared_ptr<Scene> scene)
+	{
+		s_EngineData.Scenes[scene->GetName()] = scene;
+	}
+	void Engine::SetActiveScene(const char* name)
+	{
+		s_EngineData.ActiveScene = s_EngineData.Scenes[name];
+	}
+
+	std::shared_ptr<Scene> Engine::GetActiveScene()
+	{
+		return s_EngineData.ActiveScene;
 	}
 
 	void Engine::Init(const std::string& title, uint32_t width, uint32_t height)
@@ -29,6 +45,7 @@ namespace Spyen {
 		s_EngineData.Window.Init(title, height, height);
 		AssetManager::LookForAssetsDirectory();
 		Renderer::Init();
+		SoundManager::Init();
 		AssetManager::Init();
 		
 	}
@@ -60,6 +77,7 @@ namespace Spyen {
 			s_EngineData.Window.SwapBuffers();
 		}
 		s_EngineData.Window.Destroy();
+		SoundManager::Shutdown();
 		Renderer::Shutdown();
 	}
 }

@@ -3,6 +3,7 @@
 #include "TextObj.h"
 #include "BoxEntity.h"
 #include "GameObjects/StaticGameObject.h"
+#include "Audio/SoundManager.h"
 
 class ControlObject : public Spyen::DynamicGameObject
 {

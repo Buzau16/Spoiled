@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include "Core/Log.h"
+#include "Core/LogMacros.h"
 
 namespace Spyen
 {
