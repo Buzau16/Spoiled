@@ -25,6 +25,9 @@ int main() {
 	//scene2->AddObject<ControlObject>("ControlObject");
 	scene1->AddObject<BoxEntity>("Player");
 
+	scene1->AddObject
+
+
 	Spyen::Engine::Run();
     return 0;
 }

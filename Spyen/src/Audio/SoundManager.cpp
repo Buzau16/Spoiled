@@ -26,6 +26,7 @@ namespace Spyen {
 	void SoundManager::PlaySound(const std::string& name)
 	{
 		auto sound = AssetManager::GetSound(name);
+		
 		sound->Play();
 	}
 }

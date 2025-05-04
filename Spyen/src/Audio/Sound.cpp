@@ -13,6 +13,11 @@ namespace Spyen {
     }
     void Sound::Play()
     {
+        //SPY_CORE_INFO("Playing sound...");
+        if (ma_sound_is_playing(&m_Sound)) {
+            Stop();
+            ma_sound_seek_to_pcm_frame(&m_Sound, 0);
+        }
         ma_sound_start(&m_Sound);
     }
     void Sound::Stop()
